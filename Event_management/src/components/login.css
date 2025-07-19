@@ -1,0 +1,108 @@
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  background: #fff;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.12);
+  border-radius: 18px;
+  border: none;
+  animation: loginFadeIn 0.9s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: box-shadow 0.3s, transform 0.3s;
+}
+
+@keyframes loginFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(40px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.login-container h1, .login-container .MuiTypography-h4 {
+  color: #1a2233 !important;
+  font-size: 2.2rem !important;
+  font-weight: 800 !important;
+  margin-bottom: 1.2rem !important;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 8px rgba(44,62,80,0.08);
+  text-align: center;
+}
+
+.login-container form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.login-container .MuiTextField-root {
+  background: #f5f7fa;
+  border-radius: 8px;
+  color: #222b45;
+  transition: box-shadow 0.2s, background 0.2s;
+}
+
+.login-container .MuiInputBase-input,
+.login-container .MuiInputLabel-root {
+  color: #222b45 !important;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+}
+
+.login-container .MuiInputLabel-root {
+  background: transparent;
+  padding: 0 4px;
+  transition: color 0.2s, background 0.2s;
+}
+
+.login-container .MuiInputLabel-root.Mui-focused {
+  color: #1976d2 !important;
+  background: #fff;
+}
+
+.login-container .MuiOutlinedInput-root {
+  border-radius: 8px;
+}
+
+.login-container .MuiOutlinedInput-notchedOutline {
+  border-color: #b0b7c3;
+  transition: border-color 0.2s;
+}
+
+.login-container .Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: #1976d2;
+}
+
+.login-container .MuiTextField-root:focus-within {
+  box-shadow: 0 0 0 2px #a1c4fd;
+  background: #fff;
+}
+
+.login-container .MuiButton-root {
+  font-weight: 700;
+  letter-spacing: 1px;
+  box-shadow: 0 2px 12px rgba(100,108,255,0.10);
+  transition: background 0.2s, transform 0.2s;
+  background: linear-gradient(90deg, #1976d2 0%, #21a1fd 100%);
+  color: #fff;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  padding: 0.8em 0;
+}
+
+.login-container .MuiButton-root:hover {
+  background: linear-gradient(90deg, #21a1fd 0%, #1976d2 100%);
+  color: #fff;
+  transform: scale(1.03);
+}
+
+.login-container .MuiTypography-root[style*='color: error'] {
+  color: #d32f2f !important;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}

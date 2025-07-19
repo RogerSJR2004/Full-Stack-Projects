@@ -1,0 +1,64 @@
+
+.menu-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  min-height: 100vh;
+  background-image: url('https://img.freepik.com/free-photo/restaurant-interior_1127-3394.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu-bg::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 1;
+}
+
+.menu-content {
+  position: relative;
+  z-index: 2;
+  padding: 2rem 3rem;
+  color: #fff;
+  background: rgba(0,0,0,0.7);
+  border-radius: 1rem;
+  min-width: 320px;
+  text-align: center;
+}
+
+.App-header {
+  z-index: 10;
+}
+
+.menu-order-btn {
+  display: inline-block;
+  margin-top: 2rem;
+  padding: 0.75rem 2.5rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #fff;
+  background: #e67e22;
+  border: none;
+  border-radius: 2rem;
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  transition: background 0.2s, transform 0.2s;
+  cursor: pointer;
+}
+
+.menu-order-btn:hover,
+.menu-order-btn:focus {
+  background: #cf711f;
+  transform: translateY(-2px) scale(1.04);
+  color: #fff;
+  text-decoration: none;
+}

@@ -1,0 +1,55 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+/* App Header Styles */
+.App-header {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  background: #111;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+
+.App-header h1 {
+  margin: 0;
+  font-size: 1.7rem;
+  letter-spacing: 1px;
+  font-weight: 700;
+}
+
+/* Navigation Styles */
+.App-header nav {
+  display: flex;
+  gap: 2rem;
+}
+
+.App-header nav a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: 500;
+  padding: 0.5rem 1.2rem;
+  border-radius: 999px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.App-header nav a:hover {
+  background: #fff;
+  color: #111;
+  text-decoration: underline;
+}
+
+.main-content {
+  margin-top: 70px; /* Adjust if navbar height changes */
+}

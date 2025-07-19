@@ -1,0 +1,88 @@
+.login-bg {
+  min-height: 100vh;
+  width: 100vw;
+  background: linear-gradient(120deg, #f7b733 0%, #fc4a1a 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-container {
+  background: #fff;
+  padding: 2.5rem 2rem 2rem 2rem;
+  border-radius: 1.2rem;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.13);
+  min-width: 340px;
+  max-width: 380px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-title {
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
+  color: #fc4a1a;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.login-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.login-input .MuiInputBase-root {
+  background: #f7f7f7;
+  border-radius: 6px;
+}
+
+.login-input input {
+  padding: 0.7rem 1rem;
+  font-size: 1rem;
+}
+
+.login-button {
+  margin-top: 8px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  background: linear-gradient(90deg, #f7b733 0%, #fc4a1a 100%) !important;
+  color: #fff !important;
+  border-radius: 6px;
+  padding: 0.7rem 0;
+  font-size: 1.1rem;
+  box-shadow: 0 2px 8px rgba(252,74,26,0.08);
+  transition: background 0.2s;
+}
+
+.login-button:hover {
+  background: linear-gradient(90deg, #fc4a1a 0%, #f7b733 100%) !important;
+}
+
+.login-error {
+  color: #d32f2f;
+  background: #ffeaea;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 0.97rem;
+  margin-bottom: 4px;
+  text-align: center;
+}
+
+/* Password visibility icon alignment */
+.login-input .MuiInputAdornment-root {
+  margin-right: 0.2rem;
+}
+
+@media (max-width: 500px) {
+  .login-container {
+    min-width: 90vw;
+    padding: 1.2rem 0.5rem;
+  }
+  .login-title {
+    font-size: 1.3rem;
+  }
+}
