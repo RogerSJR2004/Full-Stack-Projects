@@ -102,9 +102,9 @@ exports.updateUser = async(req,res) => {
     { 
         return res.status(404).send("ID is not found"); 
     } 
- 
-        const emailAddress = req.body.emailAddress || existingUser[0].email_address; 
-        const password = req.body.password || existingUser[0].password; 
+    
+        const hashedPassword = await bcrypt.hash(existingUser[0].password, 10);
+        const password = hashedPassword;
         const fullName = req.body.fullName || existingUser[0].full_name; 
         const dob = req.body.dob || existingUser[0].date_of_birth; 
         const gender = req.body.gender || existingUser[0].gender; 
@@ -115,12 +115,11 @@ exports.updateUser = async(req,res) => {
         const district = req.body.district || existingUser[0].district; 
         const state = req.body.state || existingUser[0].state; 
         const country = req.body.country || existingUser[0].country; 
-        const status = req.body.status || existingUser[0].status || 1; 
+        // const status = req.body.status || existingUser[0].status || 1; //user ku access kuduka kudathu, only admin can 
         // const createdAt = new Date(); 
  
  
-            let updateQuery = `UPDATE users SET 
-                email_address = :emailAddress, 
+            let updateQuery = `UPDATE users SET  
                 password = :password, 
                 full_name = :fullName, 
                 date_of_birth = :dob, 
@@ -131,15 +130,15 @@ exports.updateUser = async(req,res) => {
                 address_line_2 = :addressLine2, 
                 country = :country, 
                 state = :state, 
-                district = :district, 
-                status = :status
+                district = :district 
+                
             WHERE id = :id`; 
  
         const updateUser = await eventDB.query(updateQuery,{ 
-            replacements:{emailAddress, password, fullName, dob, 
+            replacements:{password, fullName, dob, 
                             gender, mobile, occupation, addressLine1, 
                             addressLine2, country, state, district, 
-                            status,id}, 
+                            id}, 
             types:QueryTypes.UPDATE, 
         }); 
         console.log("updateuser", updateUser); 
