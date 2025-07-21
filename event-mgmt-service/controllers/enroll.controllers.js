@@ -4,26 +4,44 @@ const enrollsTbl = require('../models/enrolls.model')(eventDB);
 // Add (enroll a user in an event)
 exports.add = async (req, res) => {
     const { eventId } = req.params;
-    const { userId, status } = req.body; 
+    const {
+        full_name,
+        email_address,
+        mobile,
+        country,
+        state,
+        district,
+        status,
+        meta_1,
+        meta_2,
+        meta_3,
+        created_by,
+        created_at,
+        updated_by,
+        updated_at
+    } = req.body;
 
-    // Input validation
-    if (!userId) {
-        return res.status(400).json({ error: "userId is required" });
-    }
-    if (!eventId) {
-        return res.status(400).json({ error: "eventId is required" });
+    if (!eventId || !full_name || !email_address || !mobile) {
+        return res.status(400).json({ error: "eventId, full_name, email_address, and mobile are required" });
     }
 
     try {
-        // Check for duplicate enrollment
-        const existing = await enrollsTbl.findOne({ where: { event_id: eventId, user_id: userId } });
-        if (existing) {
-            return res.status(409).json({ error: "User already enrolled in this event" });
-        }
         let result = await enrollsTbl.create({
             event_id: eventId,
-            user_id: userId,
-            status // include other fields as needed
+            full_name,
+            email_address,
+            mobile,
+            country,
+            state,
+            district,
+            status,
+            meta_1,
+            meta_2,
+            meta_3,
+            created_by,
+            created_at,
+            updated_by,
+            updated_at
         });
         return res.status(201).json({ message: "Enrollment created successfully", data: result });
     } catch (err) {
