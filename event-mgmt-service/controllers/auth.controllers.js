@@ -4,29 +4,32 @@ const eventDB = require('../config/db');
 // const users = [];  -> array use panrom
 
 exports.login = async(req,res) => { 
-    console.log("req.body", req.body) 
+    console.log("[LOGIN] req.body:", req.body); 
      const { emailAddress, password } = req.body; 
     const user = await eventDB.query(`select email_address, password from     
 users where email_address = :email`, 
 {replacements: { email: emailAddress }, 
 type: QueryTypes.SELECT}); 
-console.log("user", user) ;                                               
+console.log("[LOGIN] user from DB:", user);                                               
     if (user.length === 0) { 
+        console.log("[LOGIN] Email not found:", emailAddress);
         return res.status(400).send('Email is not found'); 
     } 
  
     try { 
-        // console.log("password", password)
-    
-        // Compare the provided password with the stored hashed password 
-        if (await bcrypt.compare(password, user[0].password)) { 
+        console.log("[LOGIN] Comparing password:", password, "with hash:", user[0].password);
+        const passwordMatch = await bcrypt.compare(password, user[0].password);
+        console.log("[LOGIN] Password match:", passwordMatch);
+        if (passwordMatch) { 
         // if (password === user[0].password) {  //index [0] endru meaning -> array la irukum data eduka "[index number]"" like wise we use dot" . "for get info of object            res.send('Login successful'); 
-        } 
+        
+    } 
+
         else { 
             res.status(400).send('Invalid username or password'); 
         } 
     } catch (err) { 
-        console.error('Login error:', err);
+        console.error('[LOGIN] Login error:', err);
         res.status(500).send('Error logging in'); 
     } 
 } 
@@ -61,8 +64,8 @@ users where email_address='${emailAddress}'`,
             return res.status(409).send('Email already exists'); 
         } 
         const status = 1; 
-        const role = 1;
         const createdAt = new Date(); 
+        const role ="user"
 
         const hashedPassword = await bcrypt.hash(password, 10);
  
@@ -115,6 +118,7 @@ exports.updateUser = async(req,res) => {
         const district = req.body.district || existingUser[0].district; 
         const state = req.body.state || existingUser[0].state; 
         const country = req.body.country || existingUser[0].country; 
+        const role = req.body.role || existingUser[0].role;
         // const status = req.body.status || existingUser[0].status || 1; //user ku access kuduka kudathu, only admin can 
         // const createdAt = new Date(); 
  
@@ -130,20 +134,20 @@ exports.updateUser = async(req,res) => {
                 address_line_2 = :addressLine2, 
                 country = :country, 
                 state = :state, 
-                district = :district 
+                district = :district,
+                role = :role
                 
             WHERE id = :id`; 
  
         const updateUser = await eventDB.query(updateQuery,{ 
             replacements:{password, fullName, dob, 
                             gender, mobile, occupation, addressLine1, 
-                            addressLine2, country, state, district, 
-                            id}, 
+                            addressLine2, country, state, district, role, id}, 
             types:QueryTypes.UPDATE, 
         }); 
         console.log("updateuser", updateUser); 
  
-        res.status(201).send('User info updated successfully for id: ',id); 
+        res.status(201).send(`User info updated successfully for id: ${id}`); //for dynmaic we use `${id}`
     } catch(err) { 
         console.log("err",err) 
 res.status(500).send('Error while updating user'); 

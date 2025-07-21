@@ -3,14 +3,14 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../components/login.css';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
 // Yup schema
 const validationSchema = Yup.object({
-  email: Yup.string()
+  emailAddress: Yup.string()
     .email('Invalid email address')
     .required('Email is required'),
   password: Yup.string()
@@ -20,15 +20,28 @@ const validationSchema = Yup.object({
 });
 
 function Login() {
+  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
-      email: '',
+      emailAddress: '',
       password: '',
     },
     validationSchema: validationSchema,
-    onSubmit: values => {
-      // authentication logic
-      alert(`Logged in as ${values.email}`);
+    onSubmit: async values => {
+      let result = await fetch("http://localhost:8080/ems/v1/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      });
+      const text = await result.text();
+      if (result.status === 200) {
+        alert(text); // Show success message
+        navigate('/dashboard');
+      } else {
+        alert(text); // Show error message from backend
+      }
     },
   });
 
@@ -43,15 +56,15 @@ function Login() {
       <form onSubmit={formik.handleSubmit}>
         <TextField
           label="Email"
-          name="email"
+          name="emailAddress"
           type="email"
-          value={formik.values.email}
+          value={formik.values.emailAddress}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           fullWidth
           margin="normal"
-          error={formik.touched.email && Boolean(formik.errors.email)}
-          helperText={formik.touched.email && formik.errors.email}
+          error={formik.touched.emailAddress && Boolean(formik.errors.emailAddress)}
+          helperText={formik.touched.emailAddress && formik.errors.emailAddress}
           required
         />
         <TextField

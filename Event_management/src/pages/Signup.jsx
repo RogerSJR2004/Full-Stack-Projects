@@ -16,11 +16,11 @@ import MenuItem from "@mui/material/MenuItem";
 
 // Yup validation schema
 const validationSchema = Yup.object({
-  name: Yup.string().required("Name is required"),
-  email: Yup.string()
+  fullName: Yup.string().required("Name is required"),
+  emailAddress: Yup.string()
     .email("Invalid email address")
     .required("Email is required"),
-  mobile: Yup.number().required("Mobile number is required"),
+  mobile: Yup.string().required("Mobile number is required"),
   occupation: Yup.string().required("Occupation is required"),
   gender: Yup.string().required("Gender is required"),
   dob: Yup.date().required("Date of Birth is required"),
@@ -41,19 +41,44 @@ const handleChange = (event) => {
 function Signup() {
 
 
-  const genderOptions =['Male', 'Female'];
+  const genderOptions = [
+    { label: 'Male', value: 1 },
+    { label: 'Female', value: 2 }
+  ];
   const occupationOptions = ['Student', 'Professional', 'Other'];
 
   const formik = useFormik({
     initialValues: {
-      name: "",
-      email: "",
+      fullName: "",
+      emailAddress: "",
       password: "",
+      mobile: "",
+      occupation: "",
+      gender: "",
+      dob: "",
+      college: "",
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      // Signup Logic
-      alert(`Signed up as ${values.name} (${values.email})`);
+    onSubmit: async (values) => {
+      // Prepare the data to match backend expectations
+      const payload = {
+        ...values,
+        // If your backend expects addressLine1, addressLine2, etc., add them here
+      };
+      let result = await fetch("http://localhost:8080/ems/v1/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+      if (result.status === 201) {
+        alert(`Signup successful for ${values.fullName}`);
+        // Optionally redirect to login or dashboard
+      } else {
+        const error = await result.text();
+        alert(`Signup failed: ${error}`);
+      }
     },
   });
 
@@ -76,15 +101,15 @@ function Signup() {
       <form onSubmit={formik.handleSubmit}>
         <TextField
           label="Name"
-          name="name"
+          name="fullName"
           type="text"
-          value={formik.values.name}
+          value={formik.values.fullName}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           fullWidth
           margin="normal"
-          error={formik.touched.name && Boolean(formik.errors.name)}
-          helperText={formik.touched.name && formik.errors.name}
+          error={formik.touched.fullName && Boolean(formik.errors.fullName)}
+          helperText={formik.touched.fullName && formik.errors.fullName}
           required
         />
 
@@ -132,7 +157,7 @@ function Signup() {
             onBlur={formik.handleBlur}
           >
             {genderOptions.map((option) => (
-              <MenuItem key={option} value={option}>{option}</MenuItem>
+              <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
             ))}
           </Select>
           {formik.touched.gender && formik.errors.gender && (
@@ -168,15 +193,15 @@ function Signup() {
         />
         <TextField
           label="Email"
-          name="email"
+          name="emailAddress"
           type="email"
-          value={formik.values.email}
+          value={formik.values.emailAddress}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           fullWidth
           margin="normal"
-          error={formik.touched.email && Boolean(formik.errors.email)}
-          helperText={formik.touched.email && formik.errors.email}
+          error={formik.touched.emailAddress && Boolean(formik.errors.emailAddress)}
+          helperText={formik.touched.emailAddress && formik.errors.emailAddress}
           required
         />
         <TextField

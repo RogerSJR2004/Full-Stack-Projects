@@ -31,6 +31,16 @@ app.get('/ems/1', (req, res) => {
     return res.send(`Welcome to demo backend ${PORT}`);
 })
 
+app.listen(PORT, async() => { 
+    console.log(`Server listening on ${PORT}`); 
+    try { 
+    await eventDB.authenticate(); 
+    console.log('Connection has been established successfully.'); 
+    } catch (error) { 
+    console.error('Unable to connect to the database:', error); 
+    } 
+    } 
+    );
 // app.get('/ems/event/list', (req, res) => {
 //     return res.json(eventData);
 // })
@@ -48,13 +58,4 @@ app.get('/ems/1', (req, res) => {
 // })
 
 // initialized the server 
-app.listen(PORT, async() => { 
-    console.log(`Server listening on ${PORT}`); 
-    try { 
-    await eventDB.authenticate(); 
-    console.log('Connection has been established successfully.'); 
-    } catch (error) { 
-    console.error('Unable to connect to the database:', error); 
-    } 
-    } 
-    );
+
