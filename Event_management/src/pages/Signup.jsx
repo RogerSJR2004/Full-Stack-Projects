@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
+import { useNavigate } from "react-router-dom";
 // import SelectField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
@@ -26,20 +27,15 @@ const validationSchema = Yup.object({
   dob: Yup.date().required("Date of Birth is required"),
   college: Yup.string().required("College is required"),
   password: Yup.string()
-    .min(6, "Too Short!")
-    .max(12, "Too Long!")
+    .min(8, "Password must be at least 8 characters")
     .required("Password is required"),
 });
 
 
-
-const handleChange = (event) => {
-  setAge(event.target.value);
-};
-
-
 function Signup() {
-
+  const [submitError, setSubmitError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const navigate = useNavigate();
 
   const genderOptions = [
     { label: 'Male', value: 1 },
@@ -60,24 +56,36 @@ function Signup() {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      // Prepare the data to match backend expectations
+      setSubmitError("");
+      setIsSubmitting(true);
       const payload = {
         ...values,
-        // If your backend expects addressLine1, addressLine2, etc., add them here
       };
-      let result = await fetch("http://localhost:8080/ems/v1/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
-      if (result.status === 201) {
-        alert(`Signup successful for ${values.fullName}`);
-        // Optionally redirect to login or dashboard
-      } else {
-        const error = await result.text();
-        alert(`Signup failed: ${error}`);
+      try {
+        let result = await fetch("http://localhost:8080/ems/v1/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        });
+        if (result.status === 201) {
+          alert(`Signup successful for ${values.fullName}`);
+          navigate('/login');
+        } else {
+          let errorMsg = "Signup failed";
+          try {
+            const errorData = await result.json();
+            errorMsg = errorData.message || errorMsg;
+          } catch {
+            errorMsg = await result.text();
+          }
+          setSubmitError(errorMsg);
+        }
+      } catch (err) {
+        setSubmitError("Network error. Please try again.");
+      } finally {
+        setIsSubmitting(false);
       }
     },
   });
@@ -217,15 +225,20 @@ function Signup() {
           helperText={formik.touched.password && formik.errors.password}
           required
         />
-
+        {submitError && (
+          <Typography color="error" align="center" sx={{ mt: 1 }}>
+            {submitError}
+          </Typography>
+        )}
         <Button
           type="submit"
           variant="contained"
           color="primary"
           fullWidth
           sx={{ mt: 2 }}
+          disabled={isSubmitting}
         >
-          Signup
+          {isSubmitting ? 'Signing up...' : 'Signup'}
         </Button>
         <Typography variant="body2" align="center" sx={{ mt: 2 }}>
           Already have an account? <Link to="/login">Login</Link>

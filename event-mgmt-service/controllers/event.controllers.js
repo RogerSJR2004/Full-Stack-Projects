@@ -42,19 +42,39 @@ exports.add = async(req, res) =>{
 }
 exports.list = async (req, res) =>{
     try{
-        const result = await eventsTbl.findAll();
-        return res.json(result);
-    }
+        const result = await eventsTbl.findAll({
+            attributes: ['id','event_name','event_description','event_date','event_location','event_link','event_video_link','event_image_link','publish_from','publish_to','status'],
+
+        });
+
+        // list all events
+        console.log("event >>> list", result);
+        return res.send(result);
+//         for (let i=0;i<result.length;i++) // to get sepecific data from the table
+// {
+//     console.log("event >>> list",i, result[i].event_name);
+
+// }   
+//         // Return the event names in an array under the key "Event Name"
+//         const eventNames = result.map(event => event.event_name);
+//         return res.status(200).json({ "Event Name": eventNames });
+        
+        // console.log("event >>> list",result);
+        // return res.status(200).json (result) // -> or we can use this to make that in array {eventList:result}
+    } // --> array kula irukum data va call pana index[0] "value podanum" then after reaching the object we need to use dot " . " to get the value of the spectific data
     catch(err){
         console.log("err",err)
         return res.status(504).send("Error in event list")
     }
 }
 
-exports.getEvent = async (req, res) =>{
+exports.getEvent = async (req, res) =>{   
     const { id } = req.params;
     try{
-        const event = await eventsTbl.findByPk(id);
+        const event = await eventsTbl.findOne({
+            where: { id },
+            attributes: ['id','event_name','event_description','event_date','event_location','event_link','event_video_link','event_image_link','publish_from','publish_to','status']
+        });
         if (!event) {
             return res.status(404).send("Event not found");
         }

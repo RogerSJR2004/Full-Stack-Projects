@@ -10,6 +10,7 @@ import Chip from '@mui/material/Chip';
 import Avatar from '@mui/material/Avatar';
 import StarIcon from '@mui/icons-material/Star';
 import '../components/Event.css';
+import { useNavigate } from 'react-router-dom';
 
 const allEvents = [
   {

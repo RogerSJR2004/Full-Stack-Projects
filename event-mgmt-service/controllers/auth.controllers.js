@@ -22,7 +22,7 @@ console.log("[LOGIN] user from DB:", user);
         console.log("[LOGIN] Password match:", passwordMatch);
         if (passwordMatch) { 
         // if (password === user[0].password) {  //index [0] endru meaning -> array la irukum data eduka "[index number]"" like wise we use dot" . "for get info of object            res.send('Login successful'); 
-        
+        return res.status(200).send('Login successful');  // mistake made i didn't tell Backend what to do after sucess this cause me to stuck in login page
     } 
 
         else { 

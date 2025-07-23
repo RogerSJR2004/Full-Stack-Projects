@@ -1,0 +1,1970 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Digi Projects – GraceUp</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <!-- Google Font & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --clr-primary: #3b82f6;
+      --clr-primary-dark: #2563eb;
+      --clr-primary-light: #93c5fd;
+      --clr-secondary: #06b6d4;
+      --clr-accent: #f43f5e;
+      --clr-success: #10b981;
+      --clr-warning: #f59e0b;
+      --clr-bg: #f8fafc;
+      --clr-card: #ffffff;
+      --clr-text: #1e293b;
+      --clr-text-light: #64748b;
+      --clr-border: #e2e8f0;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --radius-sm: 8px;
+      --shadow: 0 4px 20px rgba(0,0,0,.06);
+      --shadow-lg: 0 10px 30px rgba(0,0,0,.1);
+      --shadow-sm: 0 2px 10px rgba(0,0,0,.05);
+      --transition: .35s cubic-bezier(.4,0,.2,1);
+      --transition-fast: .2s ease;
+      --navbar-height: 70px;
+    }
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--clr-bg);
+      color: var(--clr-text);
+      line-height: 1.6;
+      padding-top: var(--navbar-height);
+    }
+    
+    /* ---------- SCROLLBAR ---------- */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--clr-bg);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--clr-primary-light);
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--clr-primary);
+    }
+    
+    /* ---------- TYPOGRAPHY ---------- */
+    h1, h2, h3, h4 {
+      line-height: 1.2;
+      font-weight: 700;
+    }
+    
+    /* ---------- NAVBAR ---------- */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--navbar-height);
+      background: rgba(255,255,255,.95);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      align-items: center;
+      padding: 0 2rem;
+      z-index: 1000;
+      transition: var(--transition);
+    }
+    
+    .navbar.scrolled {
+      box-shadow: var(--shadow);
+    }
+    
+    .navbar-brand {
+      font-weight: 700;
+      font-size: 1.3rem;
+      color: var(--clr-primary-dark);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+    
+    .navbar-brand img {
+      height: 30px;
+    }
+    
+    .navbar-nav {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      margin-left: auto;
+    }
+    
+    .nav-link {
+      color: var(--clr-text);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: .95rem;
+      transition: var(--transition-fast);
+      position: relative;
+    }
+    
+    .nav-link:hover {
+      color: var(--clr-primary);
+    }
+    
+    .nav-link.active::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--clr-primary);
+      border-radius: 2px;
+    }
+    
+    .nav-btn {
+      padding: .6rem 1.2rem;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      font-size: .9rem;
+      transition: var(--transition);
+    }
+    
+    .nav-btn-outline {
+      background: transparent;
+      color: var(--clr-primary);
+      border: 1px solid var(--clr-primary);
+    }
+    
+    .nav-btn-outline:hover {
+      background: var(--clr-primary);
+      color: #fff;
+    }
+    
+    .nav-btn-primary {
+      background: var(--clr-primary);
+      color: #fff;
+      border: 1px solid var(--clr-primary);
+    }
+    
+    .nav-btn-primary:hover {
+      background: var(--clr-primary-dark);
+    }
+    
+    .user-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--clr-primary-light);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    
+    .user-avatar:hover {
+      transform: scale(1.1);
+    }
+    
+    /* ---------- HERO ---------- */
+    .hero {
+      position: relative;
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+      background: linear-gradient(-45deg, #3b82f6, #06b6d4, #f43f5e, #8b5cf6);
+      background-size: 400% 400%;
+      animation: gradientFlow 12s ease infinite;
+      clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+    }
+    
+    @keyframes gradientFlow {
+      0% { background-position: 0% 50% }
+      50% { background-position: 100% 50% }
+      100% { background-position: 0% 50% }
+    }
+    
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='1200' height='600' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cfilter id='a'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='1' result='noise'/%3E%3CfeColorMatrix in='noise' values='1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 0 1'/%3E%3C/filter%3E%3C/defs%3E%3Crect width='100%25' height='100%25' filter='url(%23a)' opacity='.15'/%3E%3C/svg%3E");
+      opacity: .4;
+    }
+    
+    .hero-content {
+      z-index: 2;
+      color: #fff;
+      max-width: 800px;
+      padding: 0 1.5rem;
+      text-shadow: 0 2px 4px rgba(0,0,0,.1);
+    }
+    
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 800;
+      margin-bottom: 1rem;
+      letter-spacing: -0.5px;
+    }
+    
+    .hero p {
+      font-size: 1.25rem;
+      margin-bottom: 2.5rem;
+      opacity: .9;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .hero-btns {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    
+    .btn {
+      padding: 1rem 2.4rem;
+      font-weight: 600;
+      border-radius: var(--radius);
+      border: none;
+      cursor: pointer;
+      transition: var(--transition);
+      font-size: 1rem;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+    }
+    
+    .btn-primary {
+      background: #fff;
+      color: var(--clr-primary-dark);
+      box-shadow: 0 4px 15px rgba(255,255,255,.3);
+    }
+    
+    .btn-primary:hover {
+      background: #e0e7ff;
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(255,255,255,.4);
+    }
+    
+    .btn-outline {
+      background: transparent;
+      color: #fff;
+      border: 2px solid rgba(255,255,255,.7);
+      backdrop-filter: blur(5px);
+    }
+    
+    .btn-outline:hover {
+      background: #fff;
+      color: var(--clr-primary-dark);
+      border-color: #fff;
+    }
+    
+    .scroll-down {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #fff;
+      font-size: 1.5rem;
+      animation: bounce 2s infinite;
+      cursor: pointer;
+    }
+    
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translateY(0) translateX(-50%); }
+      40% { transform: translateY(-20px) translateX(-50%); }
+      60% { transform: translateY(-10px) translateX(-50%); }
+    }
+    
+    /* ---------- SECTIONS ---------- */
+    section {
+      padding: 5rem 1.5rem;
+      position: relative;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      position: relative;
+    }
+    
+    .section-title {
+      font-size: 2.5rem;
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 1.2rem;
+      letter-spacing: -0.5px;
+      position: relative;
+      display: inline-block;
+    }
+    
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 4px;
+      background: var(--clr-primary);
+      border-radius: 2px;
+    }
+    
+    .subtitle {
+      text-align: center;
+      color: var(--clr-text-light);
+      margin-bottom: 3rem;
+      font-size: 1.1rem;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    /* ---------- FEATURED PROJECT ---------- */
+    .featured {
+      background: var(--clr-card);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      padding: 2rem;
+      overflow: hidden;
+      position: relative;
+      border: 1px solid var(--clr-border);
+    }
+    
+    .featured::before {
+      content: 'Project of the Month';
+      position: absolute;
+      top: 20px;
+      right: -30px;
+      background: var(--clr-accent);
+      color: white;
+      padding: .3rem 2rem;
+      font-size: .9rem;
+      font-weight: 600;
+      transform: rotate(45deg);
+      box-shadow: 0 2px 10px rgba(244, 63, 94, 0.3);
+    }
+    
+    .featured-content {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+    
+    .featured-img {
+      flex: 1;
+      min-width: 300px;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    
+    .featured-img img {
+      width: 100%;
+      height: 280px;
+      object-fit: cover;
+      transition: var(--transition);
+    }
+    
+    .featured-img:hover img {
+      transform: scale(1.05);
+    }
+    
+    .featured-info {
+      flex: 1;
+    }
+    
+    .featured-info h3 {
+      font-size: 1.8rem;
+      margin-bottom: .8rem;
+      color: var(--clr-primary-dark);
+    }
+    
+    .badges {
+      display: flex;
+      gap: .5rem;
+      flex-wrap: wrap;
+      margin: 1rem 0;
+    }
+    
+    .badge {
+      font-size: .8rem;
+      padding: .3rem .8rem;
+      border-radius: 999px;
+      background: #e0e7ff;
+      color: var(--clr-primary-dark);
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: .3rem;
+    }
+    
+    .badge i {
+      font-size: .7rem;
+    }
+    
+    .stats {
+      display: flex;
+      gap: 1.5rem;
+      font-size: .95rem;
+      color: var(--clr-text-light);
+      margin: 1.5rem 0;
+    }
+    
+    .stats span {
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+    }
+    
+    .featured-btns {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    
+    /* ---------- BENEFITS ---------- */
+    .benefits {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+    
+    .benefit-card {
+      background: var(--clr-card);
+      padding: 2.5rem 1.8rem;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      text-align: center;
+      transition: var(--transition);
+      border: 1px solid var(--clr-border);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .benefit-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--clr-primary);
+    }
+    
+    .benefit-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-lg);
+    }
+    
+    .benefit-card i {
+      font-size: 2.5rem;
+      color: var(--clr-primary);
+      margin-bottom: 1.2rem;
+      background: linear-gradient(to right, var(--clr-primary), var(--clr-secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .benefit-card h3 {
+      font-size: 1.3rem;
+      margin-bottom: .8rem;
+    }
+    
+    .benefit-card p {
+      color: var(--clr-text-light);
+      font-size: .95rem;
+    }
+    
+    /* ---------- FILTERS ---------- */
+    .filters-container {
+      background: var(--clr-card);
+      padding: 1.5rem;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin-bottom: 2rem;
+      border: 1px solid var(--clr-border);
+    }
+    
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .8rem;
+      margin-bottom: 1rem;
+      align-items: center;
+    }
+    
+    .filters input, .filters select {
+      padding: .8rem 1rem;
+      border: 1px solid var(--clr-border);
+      border-radius: var(--radius-sm);
+      font-size: .95rem;
+      flex: 1 1 200px;
+      transition: var(--transition-fast);
+      background: var(--clr-bg);
+    }
+    
+    .filters input:focus, .filters select:focus {
+      outline: none;
+      border-color: var(--clr-primary);
+      box-shadow: 0 0 0 3px var(--clr-primary-light);
+    }
+    
+    .filters input {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2364748b'%3E%3Cpath d='M15.5 14h-.79l-.28-.27a6.5 6.5 0 001.48-5.34c-.47-2.78-2.79-5-5.59-5.34a6.505 6.505 0 00-7.27 7.27c.34 2.8 2.56 5.12 5.34 5.59a6.5 6.5 0 005.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right .8rem center;
+      background-size: 1rem;
+      padding-right: 2.5rem;
+    }
+    
+    .checkbox-group {
+      display: flex;
+      gap: .8rem;
+      flex-wrap: wrap;
+    }
+    
+    .checkbox-group label {
+      font-size: .9rem;
+      background: #f1f5f9;
+      padding: .5rem 1rem;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+      transition: var(--transition-fast);
+      border: 1px solid var(--clr-border);
+    }
+    
+    .checkbox-group label:hover {
+      background: #e2e8f0;
+    }
+    
+    .checkbox-group input {
+      display: none;
+    }
+    
+    .checkbox-group input:checked + label {
+      background: var(--clr-primary-dark);
+      color: #fff;
+      border-color: var(--clr-primary-dark);
+    }
+    
+    .filter-reset {
+      margin-left: auto;
+      font-size: .9rem;
+      color: var(--clr-primary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: .3rem;
+      transition: var(--transition-fast);
+    }
+    
+    .filter-reset:hover {
+      color: var(--clr-primary-dark);
+      text-decoration: underline;
+    }
+    
+    /* ---------- GRID ---------- */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.8rem;
+    }
+    
+    .card {
+      background: var(--clr-card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      transition: var(--transition);
+      position: relative;
+      border: 1px solid var(--clr-border);
+    }
+    
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-lg);
+    }
+    
+    .card-img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      transition: var(--transition);
+    }
+    
+    .card:hover .card-img {
+      transform: scale(1.05);
+    }
+    
+    .card-badge {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: var(--clr-success);
+      color: white;
+      padding: .3rem .8rem;
+      border-radius: var(--radius-sm);
+      font-size: .75rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: .3rem;
+    }
+    
+    .card-badge.new {
+      background: var(--clr-accent);
+    }
+    
+    .card-body {
+      padding: 1.5rem;
+    }
+    
+    .card-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: .5rem;
+      color: var(--clr-primary-dark);
+    }
+    
+    .card-desc {
+      font-size: .95rem;
+      color: var(--clr-text-light);
+      margin-bottom: 1rem;
+      height: 3em;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+    
+    .card-tech {
+      display: flex;
+      gap: .5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.2rem;
+    }
+    
+    .card-stats {
+      display: flex;
+      justify-content: space-between;
+      font-size: .9rem;
+      color: var(--clr-text-light);
+      margin-bottom: 1.2rem;
+    }
+    
+    .card-stats span {
+      display: flex;
+      align-items: center;
+      gap: .3rem;
+    }
+    
+    .card-actions {
+      display: flex;
+      gap: .8rem;
+    }
+    
+    .btn-sm {
+      padding: .6rem 1.2rem;
+      font-size: .9rem;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      transition: var(--transition-fast);
+    }
+    
+    .btn-outline-sm {
+      background: transparent;
+      color: var(--clr-primary);
+      border: 1px solid var(--clr-primary);
+      flex: 1;
+    }
+    
+    .btn-outline-sm:hover {
+      background: var(--clr-primary);
+      color: #fff;
+    }
+    
+    .btn-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--clr-bg);
+      color: var(--clr-primary);
+      border: none;
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+    
+    .btn-icon:hover {
+      background: var(--clr-primary);
+      color: #fff;
+      transform: scale(1.1);
+    }
+    
+    .btn-icon.active {
+      background: var(--clr-primary);
+      color: #fff;
+    }
+    
+    /* ---------- SAVED TOGGLE ---------- */
+    .toggle-saved {
+      margin-bottom: 1.5rem;
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+    }
+    
+    .toggle-btn {
+      padding: .6rem 1.5rem;
+      background: #e2e8f0;
+      border: none;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-weight: 600;
+      transition: var(--transition-fast);
+      font-size: .95rem;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+    
+    .toggle-btn i {
+      font-size: .9rem;
+    }
+    
+    .toggle-btn.active {
+      background: var(--clr-primary-dark);
+      color: #fff;
+    }
+    
+    /* ---------- LOADER ---------- */
+    .loader {
+      display: flex;
+      justify-content: center;
+      padding: 2rem 0;
+    }
+    
+    .loader-spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid var(--clr-primary-light);
+      border-top: 4px solid var(--clr-primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    /* ---------- CTA ---------- */
+    .cta {
+      background: linear-gradient(135deg, var(--clr-primary), var(--clr-secondary));
+      color: #fff;
+      text-align: center;
+      padding: 4rem 1.5rem;
+      border-radius: var(--radius-lg);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .cta::before {
+      content: '';
+      position: absolute;
+      top: -50px;
+      right: -50px;
+      width: 200px;
+      height: 200px;
+      background: rgba(255,255,255,.1);
+      border-radius: 50%;
+    }
+    
+    .cta::after {
+      content: '';
+      position: absolute;
+      bottom: -80px;
+      left: -80px;
+      width: 300px;
+      height: 300px;
+      background: rgba(255,255,255,.05);
+      border-radius: 50%;
+    }
+    
+    .cta h3 {
+      font-size: 2.2rem;
+      margin-bottom: 1rem;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .cta p {
+      margin-bottom: 2rem;
+      opacity: .9;
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .cta .btn {
+      position: relative;
+      z-index: 1;
+    }
+    
+    /* ---------- FOOTER ---------- */
+    footer {
+      background: #fff;
+      border-top: 1px solid var(--clr-border);
+      padding: 3rem 1.5rem 2rem;
+      margin-top: 4rem;
+      clip-path: polygon(0 30px, 100% 0, 100% 100%, 0 100%);
+    }
+    
+    .footer-inner {
+      max-width: 1200px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+    }
+    
+    .footer-col h4 {
+      font-size: 1.1rem;
+      margin-bottom: 1.2rem;
+      color: var(--clr-primary-dark);
+    }
+    
+    .footer-links {
+      list-style: none;
+    }
+    
+    .footer-links li {
+      margin-bottom: .6rem;
+    }
+    
+    .footer-links a {
+      color: var(--clr-text-light);
+      text-decoration: none;
+      font-size: .95rem;
+      transition: var(--transition-fast);
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+    
+    .footer-links a:hover {
+      color: var(--clr-primary);
+    }
+    
+    .footer-links a i {
+      font-size: .8rem;
+      width: 16px;
+      text-align: center;
+    }
+    
+    .footer-social {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    
+    .footer-social a {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--clr-bg);
+      color: var(--clr-text-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition-fast);
+    }
+    
+    .footer-social a:hover {
+      background: var(--clr-primary);
+      color: #fff;
+      transform: translateY(-3px);
+    }
+    
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 2rem auto 0;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--clr-border);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 1rem;
+      font-size: .85rem;
+      color: var(--clr-text-light);
+    }
+    
+    .footer-bottom a {
+      color: var(--clr-text-light);
+      text-decoration: none;
+      transition: var(--transition-fast);
+    }
+    
+    .footer-bottom a:hover {
+      color: var(--clr-primary);
+    }
+    
+    /* ---------- MODAL ---------- */
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.7);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      backdrop-filter: blur(5px);
+      animation: fadeIn .3s ease;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    .modal-content {
+      background: #fff;
+      border-radius: var(--radius-lg);
+      max-width: 500px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+      animation: slideUp .4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    
+    @keyframes slideUp {
+      from { transform: translateY(50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    
+    .modal-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--clr-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .modal-header h3 {
+      font-size: 1.5rem;
+      color: var(--clr-primary-dark);
+    }
+    
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--clr-text-light);
+      transition: var(--transition-fast);
+    }
+    
+    .modal-close:hover {
+      color: var(--clr-accent);
+      transform: rotate(90deg);
+    }
+    
+    .modal-body {
+      padding: 1.5rem;
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: .5rem;
+      font-weight: 500;
+      font-size: .95rem;
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: .8rem 1rem;
+      border: 1px solid var(--clr-border);
+      border-radius: var(--radius-sm);
+      font-size: .95rem;
+      transition: var(--transition-fast);
+    }
+    
+    .form-control:focus {
+      outline: none;
+      border-color: var(--clr-primary);
+      box-shadow: 0 0 0 3px var(--clr-primary-light);
+    }
+    
+    textarea.form-control {
+      min-height: 120px;
+      resize: vertical;
+    }
+    
+    .modal-footer {
+      padding: 1.5rem;
+      border-top: 1px solid var(--clr-border);
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+    }
+    
+    /* ---------- TOAST ---------- */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: var(--clr-primary-dark);
+      color: white;
+      padding: 1rem 1.5rem;
+      border-radius: var(--radius-sm);
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      z-index: 9999;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: var(--transition);
+    }
+    
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    
+    .toast i {
+      font-size: 1.2rem;
+    }
+    
+    .toast-close {
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      margin-left: auto;
+    }
+    
+    /* ---------- RESPONSIVE ---------- */
+    @media (max-width: 1024px) {
+      .featured-content {
+        flex-direction: column;
+      }
+      
+      .featured-img {
+        width: 100%;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      section {
+        padding: 3.5rem 1.2rem;
+      }
+      
+      .section-title {
+        font-size: 2rem;
+      }
+      
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+      
+      .hero p {
+        font-size: 1.1rem;
+      }
+      
+      .navbar-nav {
+        display: none;
+      }
+      
+      .mobile-menu-btn {
+        display: block;
+        margin-left: auto;
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        color: var(--clr-text);
+        cursor: pointer;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      section {
+        padding: 3rem 1rem;
+      }
+      
+      .hero {
+        min-height: 70vh;
+      }
+      
+      .hero h1 {
+        font-size: 2rem;
+      }
+      
+      .hero p {
+        font-size: 1rem;
+      }
+      
+      .hero-btns {
+        flex-direction: column;
+        width: 100%;
+      }
+      
+      .hero-btns .btn {
+        width: 100%;
+        justify-content: center;
+      }
+      
+      .section-title {
+        font-size: 1.8rem;
+      }
+      
+      .grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .card-actions {
+        flex-direction: column;
+      }
+      
+      .btn-sm {
+        width: 100%;
+      }
+    }
+    
+    /* ---------- UTILITY CLASSES ---------- */
+    .text-center { text-align: center; }
+    .text-primary { color: var(--clr-primary); }
+    .mt-1 { margin-top: .5rem; }
+    .mt-2 { margin-top: 1rem; }
+    .mt-3 { margin-top: 1.5rem; }
+    .mt-4 { margin-top: 2rem; }
+    .mb-1 { margin-bottom: .5rem; }
+    .mb-2 { margin-bottom: 1rem; }
+    .mb-3 { margin-bottom: 1.5rem; }
+    .mb-4 { margin-bottom: 2rem; }
+    .py-3 { padding-top: 1.5rem; padding-bottom: 1.5rem; }
+    .px-3 { padding-left: 1.5rem; padding-right: 1.5rem; }
+  </style>
+</head>
+<body>
+
+<!-- ========== NAVBAR ========== -->
+<nav class="navbar">
+  <a href="#" class="navbar-brand">
+    <i class="fas fa-rocket"></i>
+    GraceUp
+  </a>
+  
+  <div class="navbar-nav">
+    <a href="#" class="nav-link active">Home</a>
+    <a href="#projects" class="nav-link">Projects</a>
+    <a href="#" class="nav-link">Categories</a>
+    <a href="#" class="nav-link">About</a>
+    <button class="nav-btn nav-btn-outline">Login</button>
+     <!-- Mobile menu button (hidden on desktop) -->
+  <button class="mobile-menu-btn" id="mobileMenuBtn" style="display: none;">
+    <i class="fas fa-bars"></i>
+  </button>
+</nav>
+
+<!-- ========== HERO ========== -->
+<section class="hero">
+  <div class="hero-content">
+    <h1>Digi Projects – Discover & Showcase Real Student Innovation</h1>
+    <p>Browse innovative projects, get inspired, and showcase your own work to the GraceUp community.</p>
+    <div class="hero-btns">
+      <a href="#projects" class="btn btn-primary">
+        <i class="fa-solid fa-magnifying-glass"></i> Browse Projects
+      </a>
+      <button class="btn btn-outline" onclick="openModal()">
+        <i class="fa-solid fa-plus"></i> Submit Your Project
+      </button>
+    </div>
+  </div>
+  <div class="scroll-down" onclick="scrollToSection('projects')">
+    <i class="fas fa-chevron-down"></i>
+  </div>
+</section>
+
+<!-- ========== PROJECT OF THE MONTH ========== -->
+<section>
+  <div class="container">
+    <h2 class="section-title">Project of the Month</h2>
+    <p class="subtitle">Each month we feature an outstanding student project that demonstrates innovation and technical excellence</p>
+    
+    <div class="featured">
+      <div class="featured-content">
+        <div class="featured-img">
+          <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=800&q=80" alt="AI Campus Navigation Bot">
+        </div>
+        <div class="featured-info">
+          <h3>AI-Driven Campus Navigation Bot</h3>
+          <div class="badges">
+            <span class="badge"><i class="fas fa-code"></i> CSE</span>
+            <span class="badge"><i class="fas fa-brain"></i> AI/ML</span>
+            <span class="badge"><i class="fab fa-python"></i> Python</span>
+          </div>
+          <p>Students built a voice-activated mobile bot that helps freshers navigate the campus using real-time path-finding and augmented-reality overlays. The system integrates with campus maps and provides accessibility features for visually impaired students.</p>
+          <div class="stats">
+            <span><i class="fa-solid fa-heart" style="color:#ef4444;"></i> 1.2k</span>
+            <span><i class="fa-solid fa-bookmark" style="color:#3b82f6;"></i> 847</span>
+            <span><i class="fa-solid fa-eye" style="color:#64748b;"></i> 32k</span>
+            <span><i class="fa-solid fa-comment" style="color:#10b981;"></i> 142</span>
+          </div>
+          <div class="featured-btns">
+            <button class="btn btn-primary">View Project</button>
+            <button class="btn btn-outline">
+              <i class="fas fa-play-circle"></i> Watch Demo
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== BENEFITS ========== -->
+<section style="background:#fff;">
+  <div class="container">
+    <h2 class="section-title">Why GraceUp Digi Projects?</h2>
+    <p class="subtitle">Join a growing community of student innovators and showcase your technical projects</p>
+    
+    <div class="benefits">
+      <div class="benefit-card">
+        <i class="fa-solid fa-lightbulb"></i>
+        <h3>Get Inspired by Real Student Work</h3>
+        <p>Explore diverse ideas, innovative hacks, and full-scale prototypes created by your peers across all engineering disciplines.</p>
+      </div>
+      <div class="benefit-card">
+        <i class="fa-solid fa-user-graduate"></i>
+        <h3>Showcase Your Portfolio to the World</h3>
+        <p>Build a public portfolio that recruiters, mentors, and collaborators can discover instantly. Get recognized for your work.</p>
+      </div>
+      <div class="benefit-card">
+        <i class="fa-solid fa-rocket"></i>
+        <h3>Build and Share Together</h3>
+        <p>Fork, remix, and improve existing projects in open-source spirit while earning badges and building your reputation.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== PROJECTS GRID ========== -->
+<section id="projects">
+  <div class="container">
+    <h2 class="section-title">Explore Projects</h2>
+    <p class="subtitle">Filter, search, and save projects you love. Over 500+ student projects and counting.</p>
+
+    <!-- Saved Toggle (hidden until user "logs in") -->
+    <div id="savedToggle" class="toggle-saved" style="display:none;">
+      <button class="toggle-btn active" onclick="showAll()">
+        <i class="fas fa-layer-group"></i> All Projects
+      </button>
+      <button class="toggle-btn" onclick="showSaved()">
+        <i class="fas fa-bookmark"></i> Saved Projects
+      </button>
+    </div>
+
+    <!-- Filters -->
+    <div class="filters-container">
+      <div class="filters">
+        <input type="text" id="search" placeholder="Search by title or description…" oninput="filterProjects()">
+        <select id="deptFilter" onchange="filterProjects()">
+          <option value="">All Departments</option>
+          <option>CSE</option>
+          <option>ECE</option>
+          <option>AI&DS</option>
+          <option>Civil</option>
+          <option>Mech</option>
+        </select>
+        <select id="catFilter" onchange="filterProjects()">
+          <option value="">All Categories</option>
+          <option>Tech</option>
+          <option>Mini-project</option>
+          <option>Startup</option>
+          <option>Research</option>
+          <option>Hackathon</option>
+        </select>
+        <select id="statusFilter" onchange="filterProjects()">
+          <option value="">Any Status</option>
+          <option>Completed</option>
+          <option>In Progress</option>
+          <option>Concept</option>
+        </select>
+      </div>
+      <div style="display:flex; justify-content: space-between; align-items: center;">
+        <div class="checkbox-group">
+          <input type="checkbox" id="new" onchange="filterProjects()">
+          <label for="new"><i class="fas fa-star"></i> New</label>
+          <input type="checkbox" id="liked" onchange="filterProjects()">
+          <label for="liked"><i class="fas fa-fire"></i> Popular</label>
+          <input type="checkbox" id="featured" onchange="filterProjects()">
+          <label for="featured"><i class="fas fa-award"></i> Featured</label>
+        </div>
+        <span class="filter-reset" onclick="resetFilters()">
+          <i class="fas fa-undo"></i> Reset
+        </span>
+      </div>
+    </div>
+
+    <!-- Grid -->
+    <div class="grid" id="projectsGrid"></div>
+
+    <!-- Load More -->
+    <div class="loader" id="loader" style="display: none;">
+      <div class="loader-spinner"></div>
+    </div>
+    
+    <div style="text-align:center; margin-top:2.5rem;">
+      <button class="btn btn-outline" id="loadMoreBtn" onclick="loadMore()">
+        <i class="fas fa-plus"></i> Load More
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ========== CTA ========== -->
+<section>
+  <div class="container">
+    <div class="cta">
+      <h3>Have a cool project idea? Submit and get featured!</h3>
+      <p>Your work could be the next Project of the Month and inspire thousands of students.</p>
+      <button class="btn btn-primary" onclick="openModal()">
+        <i class="fas fa-paper-plane"></i> Submit Project
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FOOTER ========== -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-col">
+        <h4>GraceUp</h4>
+        <p style="color:var(--clr-text-light); margin:.5rem 0 1rem; font-size:.95rem;">
+          Empowering students to learn, build, and share together.
+        </p>
+        <div class="footer-social">
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-github"></i></a>
+          <a href="#"><i class="fab fa-linkedin"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <ul class="footer-links">
+          <li><a href="#"><i class="fas fa-chevron-right"></i> All Projects</a></li>
+          <li><a href="#"><i class="fas fa-chevron-right"></i> Top Projects</a></li>
+          <li><a href="#"><i class="fas fa-chevron-right"></i> New Projects</a></li>
+          <li><a href="#"><i class="fas fa-chevron-right"></i> Project Categories</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <ul class="footer-links">
+          <li><a href="#"><i class="fas fa-chevron-right"></i> How to Submit</a></li>
+          <li><a href="#"><i class="fas fa-chevron-right"></i> Project Guidelines</a></li>
+          <li><a href="#"><i class="fas fa-chevron-right"></i> Open Source</a></li>
+          <li><a href="#"><i class="fas fa-chevron-right"></i> Student Stories</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul class="footer-links">
+          <li><a href="#"><i class="fas fa-chevron-right"></i> About Us</a></li>
+          <li><a href="#"><i class="fas fa-chevron-right"></i> Contact</a></li>
+          <li><a href="#"><i class="fas fa-chevron-right"></i> Careers</a></li>
+          <li><a href="#"><i class="fas fa-chevron-right"></i> Privacy Policy</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <span>&copy; 2023 GraceUp. All rights reserved.</span>
+      <div>
+        <a href="#">Terms</a>
+        <span style="margin:0 .5rem;">•</span>
+        <a href="#">Privacy</a>
+        <span style="margin:0 .5rem;">•</span>
+        <a href="#">Cookies</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ========== SUBMIT MODAL ========== -->
+<div class="modal" id="submitModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Submit Your Project</h3>
+      <button class="modal-close" onclick="closeModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form id="projectForm">
+        <div class="form-group">
+          <label for="projectTitle">Project Title</label>
+          <input type="text" id="projectTitle" class="form-control" placeholder="Your awesome project name">
+        </div>
+        
+        <div class="form-group">
+          <label for="projectDesc">Description</label>
+          <textarea id="projectDesc" class="form-control" placeholder="Explain what your project does, the problem it solves, and technologies used"></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label for="projectDept">Department</label>
+          <select id="projectDept" class="form-control">
+            <option value="">Select Department</option>
+            <option>CSE</option>
+            <option>ECE</option>
+            <option>AI&DS</option>
+            <option>Civil</option>
+            <option>Mech</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="projectCategory">Category</label>
+          <select id="projectCategory" class="form-control">
+            <option value="">Select Category</option>
+            <option>Tech</option>
+            <option>Mini-project</option>
+            <option>Startup</option>
+            <option>Research</option>
+            <option>Hackathon</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="projectTech">Technologies Used (comma separated)</label>
+          <input type="text" id="projectTech" class="form-control" placeholder="Python, Arduino, TensorFlow, etc.">
+        </div>
+        
+        <div class="form-group">
+          <label for="projectLink">Project URL (GitHub, Demo, etc.)</label>
+          <input type="url" id="projectLink" class="form-control" placeholder="https://">
+        </div>
+        
+        <div class="form-group">
+          <label for="projectImage">Project Image</label>
+          <input type="file" id="projectImage" class="form-control">
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="submitProject()">Submit Project</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== TOAST NOTIFICATION ========== -->
+<div class="toast" id="toast">
+  <i class="fas fa-check-circle"></i>
+  <span id="toastMessage">Project saved successfully!</span>
+  <button class="toast-close" onclick="hideToast()">&times;</button>
+</div>
+
+<script>
+/* ---------- MOCK DATA ---------- */
+const allProjects = [
+  {
+    id: 1,
+    title: "Smart Irrigation System", 
+    desc: "IoT-based soil moisture monitoring with automated water supply control using Arduino and cloud analytics.", 
+    dept: "ECE", 
+    category: "Tech", 
+    status: "Completed", 
+    tech: ["IoT","Arduino","Cloud"], 
+    likes: 432, 
+    saves: 210, 
+    views: 8.7, 
+    comments: 24,
+    new: true,
+    featured: false
+  },
+  {
+    id: 2,
+    title: "AI Resume Analyzer", 
+    desc: "NLP engine that scores and provides actionable feedback to improve student resumes with ATS compatibility.", 
+    dept: "CSE", 
+    category: "Research", 
+    status: "In Progress", 
+    tech: ["Python","NLP","Flask"], 
+    likes: 987, 
+    saves: 540, 
+    views: 22, 
+    comments: 42,
+    new: false,
+    featured: true
+  },
+  {
+    id: 3,
+    title: "Campus E-cycle Sharing", 
+    desc: "Solar-powered e-bikes with QR unlock system, real-time tracking, and usage analytics dashboard.", 
+    dept: "Mech", 
+    category: "Startup", 
+    status: "Completed", 
+    tech: ["IoT","Cloud","React"], 
+    likes: 612, 
+    saves: 300, 
+    views: 15, 
+    comments: 37,
+    new: false,
+    featured: true
+  },
+  {
+    id: 4,
+    title: "AR Lab Manual", 
+    desc: "Augmented-reality step-by-step lab guides for chemistry experiments with 3D molecular visualization.", 
+    dept: "AI&DS", 
+    category: "Mini-project", 
+    status: "In Progress", 
+    tech: ["Unity","ARCore","Blender"], 
+    likes: 340, 
+    saves: 150, 
+    views: 6.3, 
+    comments: 18,
+    new: true,
+    featured: false
+  },
+  {
+    id: 5,
+    title: "Low-cost Braille Printer", 
+    desc: "3D-printed braille embosser under ₹5000 for rural schools with customizable text input.", 
+    dept: "Civil", 
+    category: "Startup", 
+    status: "Completed", 
+    tech: ["3D Printing","Arduino"], 
+    likes: 1200, 
+    saves: 800, 
+    views: 31, 
+    comments: 56,
+    new: false,
+    featured: true
+  },
+  {
+    id: 6,
+    title: "AI Waste Segregator", 
+    desc: "Computer vision model to automatically sort dry & wet waste in campus mess and canteens.", 
+    dept: "CSE", 
+    category: "Tech", 
+    status: "Completed", 
+    tech: ["Python","OpenCV","TensorFlow"], 
+    likes: 780, 
+    saves: 390, 
+    views: 18, 
+    comments: 29,
+    new: true,
+    featured: false
+  },
+  {
+    id: 7,
+    title: "VR Campus Tour", 
+    desc: "Immersive virtual reality experience showcasing campus facilities for prospective students.", 
+    dept: "AI&DS", 
+    category: "Tech", 
+    status: "In Progress", 
+    tech: ["Unity","VR","Blender"], 
+    likes: 290, 
+    saves: 180, 
+    views: 7.2, 
+    comments: 14,
+    new: true,
+    featured: false
+  },
+  {
+    id: 8,
+    title: "Smart Attendance System", 
+    desc: "Facial recognition based attendance system with live reporting and anomaly detection.", 
+    dept: "CSE", 
+    category: "Tech", 
+    status: "Completed", 
+    tech: ["Python","OpenCV","Django"], 
+    likes: 520, 
+    saves: 320, 
+    views: 14.5, 
+    comments: 31,
+    new: false,
+    featured: false
+  }
+];
+
+let currentIndex = 8;
+let saved = []; // simulate logged-in user's saved ids
+const grid = document.getElementById('projectsGrid');
+let filteredProjects = [...allProjects];
+
+/* ---------- INITIALIZATION ---------- */
+document.addEventListener('DOMContentLoaded', function() {
+  // Check if user is "logged in"
+  checkLoginStatus();
+  
+  // Initial render
+  renderProjects(allProjects);
+  
+  // Add scroll event for navbar
+  window.addEventListener('scroll', handleScroll);
+  
+  // Responsive check
+  checkResponsive();
+  window.addEventListener('resize', checkResponsive);
+});
+
+/* ---------- RENDER PROJECTS ---------- */
+function renderProjects(projects) {
+  grid.innerHTML = '';
+  
+  if (projects.length === 0) {
+    grid.innerHTML = `
+      <div style="grid-column:1/-1; text-align:center; padding:3rem;">
+        <i class="fas fa-search" style="font-size:3rem; color:var(--clr-primary-light); margin-bottom:1rem;"></i>
+        <h3 style="color:var(--clr-text-light);">No projects found</h3>
+        <p>Try adjusting your filters or search term</p>
+      </div>
+    `;
+    return;
+  }
+  
+  projects.forEach((p, i) => {
+    const isSaved = saved.includes(p.id);
+    const isNew = p.new;
+    const isFeatured = p.featured;
+    
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.dataset.id = p.id;
+    card.innerHTML = `
+      <div style="position:relative; overflow:hidden;">
+        <img src="https://source.unsplash.com/600x400/?${p.tech[0]},${p.tech[1] || 'tech'}" alt="${p.title}" class="card-img">
+        ${isNew ? `<span class="card-badge new"><i class="fas fa-star"></i> New</span>` : ''}
+        ${isFeatured ? `<span class="card-badge"><i class="fas fa-award"></i> Featured</span>` : ''}
+      </div>
+      <div class="card-body">
+        <h3 class="card-title">${p.title}</h3>
+        <p class="card-desc">${p.desc}</p>
+        <div class="card-tech">
+          <span class="badge">${p.dept}</span>
+          ${p.tech.map(t => `<span class="badge">${t}</span>`).join('')}
+        </div>
+        <div class="card-stats">
+          <span><i class="fa-solid fa-heart" style="color:#ef4444;"></i> ${formatNumber(p.likes)}</span>
+          <span><i class="fa-solid fa-bookmark" style="color:#3b82f6;"></i> ${formatNumber(p.saves)}</span>
+          <span><i class="fa-solid fa-eye" style="color:#64748b;"></i> ${p.views}k</span>
+          <span><i class="fa-solid fa-comment" style="color:#10b981;"></i> ${p.comments}</span>
+        </div>
+        <div class="card-actions">
+          <button class="btn-sm btn-outline-sm">View Details</button>
+          <button class="btn-icon save-btn" onclick="toggleSave(${p.id}, this)" title="${isSaved ? 'Unsave' : 'Save'}">
+            <i class="fas fa-bookmark"></i>
+          </button>
+        </div>
+      </div>
+    `;
+    
+    // Set saved state
+    const saveBtn = card.querySelector('.save-btn');
+    if (saveBtn && isSaved) {
+      saveBtn.classList.add('active');
+    }
+    
+    grid.appendChild(card);
+  });
+}
+
+function formatNumber(num) {
+  if (num >= 1000) {
+    return (num / 1000).toFixed(1) + 'k';
+  }
+  return num;
+}
+
+/* ---------- FILTERING ---------- */
+function filterProjects() {
+  const search = document.getElementById('search').value.toLowerCase();
+  const dept = document.getElementById('deptFilter').value;
+  const category = document.getElementById('catFilter').value;
+  const status = document.getElementById('statusFilter').value;
+  const newOnly = document.getElementById('new').checked;
+  const liked = document.getElementById('liked').checked;
+  const featured = document.getElementById('featured').checked;
+
+  filteredProjects = allProjects.filter(p => {
+    return (
+      (p.title.toLowerCase().includes(search) || 
+      p.desc.toLowerCase().includes(search) ||
+      p.tech.join(' ').toLowerCase().includes(search)
+    ) && (
+      !dept || p.dept === dept
+    ) && (
+      !category || p.category === category
+    ) && (
+      !status || p.status === status
+    ) && (
+      !newOnly || p.new
+    ) && (
+      !liked || p.likes > 500
+    ) && (
+      !featured || p.featured
+    );
+  });
+  
+  renderProjects(filteredProjects);
+}
+
+function resetFilters() {
+  document.getElementById('search').value = '';
+  document.getElementById('deptFilter').value = '';
+  document.getElementById('catFilter').value = '';
+  document.getElementById('statusFilter').value = '';
+  document.getElementById('new').checked = false;
+  document.getElementById('liked').checked = false;
+  document.getElementById('featured').checked = false;
+  
+  filterProjects();
+}
+
+/* ---------- LOAD MORE ---------- */
+function loadMore() {
+  const loader = document.getElementById('loader');
+  const loadMoreBtn = document.getElementById('loadMoreBtn');
+  
+  // Show loader, hide button
+  loader.style.display = 'flex';
+  loadMoreBtn.style.display = 'none';
+  
+  // Simulate network delay
+  setTimeout(() => {
+    // Add 3 more projects (simulated fetch)
+    for (let i = 0; i < 3; i++) {
+      if (currentIndex < 20) { // Limit to 20 projects for demo
+        const baseProject = allProjects[currentIndex % allProjects.length];
+        const newProject = {
+          ...baseProject,
+          id: currentIndex + 1,
+          title: `${baseProject.title} ${currentIndex + 1}`,
+          likes: Math.floor(Math.random() * 1000),
+          saves: Math.floor(Math.random() * 500),
+          views: (Math.random() * 30 + 5).toFixed(1),
+          comments: Math.floor(Math.random() * 50),
+          new: Math.random() > 0.5
+        };
+        allProjects.push(newProject);
+        currentIndex++;
+      }
+    }
+    
+    // Re-filter and render
+    filterProjects();
+    
+    // Hide loader, show button if more available
+    loader.style.display = 'none';
+    if (currentIndex < 20) {
+      loadMoreBtn.style.display = 'inline-flex';
+    } else {
+      loadMoreBtn.textContent = 'All projects loaded';
+      loadMoreBtn.disabled = true;
+    }
+  }, 1000);
+}
+
+/* ---------- SAVE / UNSAVE ---------- */
+function toggleSave(id, btn) {
+  const idx = saved.indexOf(id);
+  
+  if (idx === -1) {
+    saved.push(id);
+    showToast('Project saved to your collection');
+  } else {
+    saved.splice(idx, 1);
+    showToast('Project removed from saved');
+  }
+  
+  // Update UI
+  if (btn) {
+    btn.classList.toggle('active');
+    btn.innerHTML = `<i class="fas fa-bookmark"></i>`;
+    btn.title = idx === -1 ? 'Unsave' : 'Save';
+  }
+  
+  // Update localStorage
+  localStorage.setItem('graceup_saved', JSON.stringify(saved));
+  
+  // Update saved count in toggle
+  document.querySelectorAll('.toggle-btn')[1].innerHTML = `
+    <i class="fas fa-bookmark"></i> Saved Projects (${saved.length})
+  `;
+}
+
+/* ---------- SAVED TOGGLE ---------- */
+function showAll() {
+  document.querySelectorAll('.toggle-btn').forEach(b => b.classList.toggle('active'));
+  filterProjects();
+}
+
+function showSaved() {
+  document.querySelectorAll('.toggle-btn').forEach(b => b.classList.toggle('active'));
+  const filtered = allProjects.filter(p => saved.includes(p.id));
+  renderProjects(filtered);
+}
+
+/* ---------- MODAL ---------- */
+function openModal() {
+  document.getElementById('submitModal').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('submitModal').style.display = 'none';
+  document.body.style.overflow = 'auto';
+}
+
+function submitProject() {
+  // Simple validation
+  const title = document.getElementById('projectTitle').value;
+  if (!title) {
+    showToast('Please enter a project title', 'error');
+    return;
+  }
+  
+  // Simulate submission
+  showToast('Project submitted successfully! Our team will review it soon.');
+  closeModal();
+  
+  // Reset form
+  document.getElementById('projectForm').reset();
+}
+
+/* ---------- TOAST NOTIFICATION ---------- */
+function showToast(message, type = 'success') {
+  const toast = document.getElementById('toast');
+  const toastMessage = document.getElementById('toastMessage');
+  
+  // Set message and style
+  toastMessage.textContent = message;
+  toast.className = `toast ${type}`;
+  
+  // Show toast
+  toast.classList.add('show');
+  
+  // Auto-hide after 4 seconds
+  setTimeout(hideToast, 4000);
+}
+
+function hideToast() {
+  document.getElementById('toast').classList.remove('show');
+}
+
+/* ---------- LOGIN SIMULATION ---------- */
+function checkLoginStatus() {
+  const isLoggedIn = true; // Change to false to see logged out state
+  const savedToggle = document.getElementById('savedToggle');
+  
+  if (isLoggedIn) {
+    savedToggle.style.display = 'flex';
+    saved = JSON.parse(localStorage.getItem('graceup_saved') || '[]');
+    
+    // Update saved count
+    if (saved.length > 0) {
+      document.querySelectorAll('.toggle-btn')[1].innerHTML = `
+        <i class="fas fa-bookmark"></i> Saved Projects (${saved.length})
+      `;
+    }
+  }
+}
+
+/* ---------- SCROLL EFFECTS ---------- */
+function handleScroll() {
+  // Navbar shadow on scroll
+  if (window.scrollY > 50) {
+    document.querySelector('.navbar').classList.add('scrolled');
+  } else {
+    document.querySelector('.navbar').classList.remove('scrolled');
+  }
+  
+  // Section fade-in effects
+  const sections = document.querySelectorAll('section');
+  sections.forEach(section => {
+    const sectionTop = section.getBoundingClientRect().top;
+    const windowHeight = window.innerHeight;
+    
+    if (sectionTop < windowHeight * 0.75) {
+      section.style.opacity = 1;
+      section.style.transform = 'translateY(0)';
+    }
+  });
+}
+
+function scrollToSection(id) {
+  const section = document.getElementById(id);
+  if (section) {
+    window.scrollTo({
+      top: section.offsetTop - 80,
+      behavior: 'smooth'
+    });
+  }
+}
+
+/* ---------- RESPONSIVE HELPERS ---------- */
+function checkResponsive() {
+  const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+  if (window.innerWidth <= 768) {
+    mobileMenuBtn.style.display = 'block';
+  } else {
+    mobileMenuBtn.style.display = 'none';
+  }
+}
+
+/* ---------- INTERSECTION OBSERVER ---------- */
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = 1;
+      e.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.1 });
+
+// Observe all sections
+document.querySelectorAll('section').forEach(s => {
+  s.style.opacity = 0;
+  s.style.transform = 'translateY(30px)';
+  s.style.transition = '1s';
+  observer.observe(s);
+});
+</script>
+</body>
+</html>
