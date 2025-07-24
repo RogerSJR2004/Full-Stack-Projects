@@ -1,8 +1,29 @@
 import React from 'react';
-import { Box, TextField, Button, Typography, Paper, Stack } from '@mui/material';
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 import MenuItem from '@mui/material/MenuItem';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
+import { keyframes } from '@mui/system';
+import EventAvailableIcon from '@mui/icons-material/EventAvailable';
+import '../../components/auth-dark.css';
+
+const fadeInUp = keyframes`
+  0% {
+    opacity: 0;
+    transform: translateY(40px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+`;
 
 const initialValues = {
   eventName: '',
@@ -30,6 +51,15 @@ const validationSchema = Yup.object({
   status: Yup.number().oneOf([0, 1], 'Invalid status').required('Status is required'),
 });
 
+const bull = (
+  <Box
+    component="span"
+    sx={{ display: 'inline-block', mx: '2px', transform: 'scale(0.8)', color: '#7bb6ff', fontWeight: 700 }}
+  >
+    •
+  </Box>
+);
+
 export default function AddEvent() {
   const [success, setSuccess] = React.useState(false);
   const [error, setError] = React.useState('');
@@ -56,32 +86,40 @@ export default function AddEvent() {
   };
 
   return (
-    <Box sx={{ minHeight: '100vh', bgcolor: '#f4f6fa', py: 6 }}>
-      <Paper elevation={3} sx={{ maxWidth: 600, mx: 'auto', p: 4 }}>
-        <Typography variant="h4" fontWeight={700} gutterBottom>
-          Add New Event
-        </Typography>
+    <Box className="app-bg-root" sx={{ minHeight: '100vh', py: { xs: 2, sm: 6 }, px: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <Box className="app-glass-card" sx={{ width: '100%', maxWidth: 480, mx: 'auto', position: 'relative', animation: `${fadeInUp} 0.7s cubic-bezier(0.23, 1, 0.32, 1)` }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 2 }}>
+          <EventAvailableIcon sx={{ color: '#7bb6ff', fontSize: 48, mb: 1 }} />
+          <Typography variant="h4" className="app-title" gutterBottom>
+            Add Event
+          </Typography>
+          <Typography variant="subtitle2" className="app-subtitle" sx={{ mb: 2 }}>
+            Fill in the details to create a new event
+          </Typography>
+        </Box>
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
         >
           {({ values, errors, touched, handleChange, handleBlur, isSubmitting }) => (
-            <Form>
+            <Form autoComplete="off">
               <Stack spacing={2}>
                 <TextField
-                  label="Event Name"
+                  label={<>{bull} Event Name</>}
                   name="eventName"
                   value={values.eventName}
                   onChange={handleChange}
                   onBlur={handleBlur}
                   required
                   fullWidth
+                  autoComplete="off"
                   error={touched.eventName && Boolean(errors.eventName)}
                   helperText={touched.eventName && errors.eventName}
+                  className="auth-input"
                 />
                 <TextField
-                  label="Event Description"
+                  label={<>{bull} Event Description</>}
                   name="eventDescription"
                   value={values.eventDescription}
                   onChange={handleChange}
@@ -90,11 +128,13 @@ export default function AddEvent() {
                   multiline
                   minRows={3}
                   fullWidth
+                  autoComplete="off"
                   error={touched.eventDescription && Boolean(errors.eventDescription)}
                   helperText={touched.eventDescription && errors.eventDescription}
+                  className="auth-input"
                 />
                 <TextField
-                  label="Event Date"
+                  label={<>{bull} Event Date</>}
                   name="eventDate"
                   type="date"
                   value={values.eventDate}
@@ -103,55 +143,65 @@ export default function AddEvent() {
                   required
                   InputLabelProps={{ shrink: true }}
                   fullWidth
+                  autoComplete="off"
                   error={touched.eventDate && Boolean(errors.eventDate)}
                   helperText={touched.eventDate && errors.eventDate}
+                  className="auth-input"
                 />
                 <TextField
-                  label="Event Location"
+                  label={<>{bull} Event Location</>}
                   name="eventLocation"
                   value={values.eventLocation}
                   onChange={handleChange}
                   onBlur={handleBlur}
                   required
                   fullWidth
+                  autoComplete="off"
                   error={touched.eventLocation && Boolean(errors.eventLocation)}
                   helperText={touched.eventLocation && errors.eventLocation}
+                  className="auth-input"
                 />
                 <TextField
-                  label="Event Link"
+                  label={<>{bull} Event Link</>}
                   name="eventLink"
                   value={values.eventLink}
                   onChange={handleChange}
                   onBlur={handleBlur}
                   required
                   fullWidth
+                  autoComplete="off"
                   error={touched.eventLink && Boolean(errors.eventLink)}
                   helperText={touched.eventLink && errors.eventLink}
+                  className="auth-input"
                 />
                 <TextField
-                  label="Event Video Link"
+                  label={<>{bull} Event Video Link</>}
                   name="eventVideoLink"
                   value={values.eventVideoLink}
                   onChange={handleChange}
                   onBlur={handleBlur}
                   required
                   fullWidth
+                  autoComplete="off"
                   error={touched.eventVideoLink && Boolean(errors.eventVideoLink)}
                   helperText={touched.eventVideoLink && errors.eventVideoLink}
+                  className="auth-input"
                 />
                 <TextField
-                  label="Event Image Link"
+                  label={<>{bull} Event Image Link</>}
                   name="eventImageLink"
                   value={values.eventImageLink}
                   onChange={handleChange}
                   onBlur={handleBlur}
                   required
                   fullWidth
+                  autoComplete="off"
                   error={touched.eventImageLink && Boolean(errors.eventImageLink)}
                   helperText={touched.eventImageLink && errors.eventImageLink}
+                  className="auth-input"
                 />
                 <TextField
-                  label="Publish From"
+                  label={<>{bull} Publish From</>}
                   name="publishFrom"
                   type="datetime-local"
                   value={values.publishFrom}
@@ -160,11 +210,13 @@ export default function AddEvent() {
                   required
                   InputLabelProps={{ shrink: true }}
                   fullWidth
+                  autoComplete="off"
                   error={touched.publishFrom && Boolean(errors.publishFrom)}
                   helperText={touched.publishFrom && errors.publishFrom}
+                  className="auth-input"
                 />
                 <TextField
-                  label="Publish To"
+                  label={<>{bull} Publish To</>}
                   name="publishTo"
                   type="datetime-local"
                   value={values.publishTo}
@@ -173,39 +225,53 @@ export default function AddEvent() {
                   required
                   InputLabelProps={{ shrink: true }}
                   fullWidth
+                  autoComplete="off"
                   error={touched.publishTo && Boolean(errors.publishTo)}
                   helperText={touched.publishTo && errors.publishTo}
+                  className="auth-input"
                 />
                 <TextField
                   select
-                  label="Status"
+                  label={<>{bull} Status</>}
                   name="status"
                   value={values.status}
                   onChange={handleChange}
                   onBlur={handleBlur}
                   fullWidth
                   required
-                  sx={{ mb: 2 }}
+                  className="auth-input"
                   error={touched.status && Boolean(errors.status)}
                   helperText={touched.status && errors.status}
                 >
                   <MenuItem value={1}>Active</MenuItem>
                   <MenuItem value={0}>Inactive</MenuItem>
                 </TextField>
-                <Button type="submit" variant="contained" color="primary" size="large" disabled={isSubmitting}>
+              </Stack>
+              <CardActions sx={{ flexDirection: 'column', alignItems: 'stretch', gap: 1, px: 0, pb: 0, mt: 2 }}>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  className="app-btn"
+                  size="large"
+                  disabled={isSubmitting}
+                >
                   Add Event
                 </Button>
                 {success && (
-                  <Typography color="success.main">Event added successfully!</Typography>
+                  <Typography color="success.main" sx={{ mt: 1, textAlign: 'center', fontWeight: 600 }}>
+                    Event added successfully!
+                  </Typography>
                 )}
                 {error && (
-                  <Typography color="error.main">{error}</Typography>
+                  <Typography color="error.main" sx={{ mt: 1, textAlign: 'center', fontWeight: 600 }}>
+                    {error}
+                  </Typography>
                 )}
-              </Stack>
+              </CardActions>
             </Form>
           )}
         </Formik>
-      </Paper>
+      </Box>
     </Box>
   );
 }

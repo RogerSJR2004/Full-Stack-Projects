@@ -10,6 +10,7 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import '../components/About.css';
+import '../components/auth-dark.css';
 
 const team = [
   { name: 'Priya Sharma', role: 'Founder & CEO', avatar: 'https://randomuser.me/api/portraits/women/68.jpg' },
@@ -21,20 +22,19 @@ const team = [
 
 function About() {
   return (
-    <Box className="about-bg" sx={{ width: '100%', minHeight: '100vh', background: 'linear-gradient(120deg, #e0eafc 0%, #cfdef3 100%)' }}>
+    <Box className="app-bg-root">
       {/* Mission Section */}
-      <Box sx={{ py: 10, px: 2, position: 'relative', textAlign: 'center', background: 'linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%)', borderRadius: 4, boxShadow: 6, mb: 6 }}>
-        <Typography variant="h2" className="about-title" gutterBottom sx={{ color: '#1a237e', fontWeight: 900, letterSpacing: 2, zIndex: 1, position: 'relative' }}>
+      <Box className="app-glass-section" sx={{ py: 8, px: 2, textAlign: 'center', mb: 6 }}>
+        <Typography variant="h2" className="app-title" gutterBottom>
           About EventManager
         </Typography>
-        <Typography variant="h5" className="about-mission" gutterBottom sx={{ color: '#263238', fontWeight: 500, zIndex: 1, position: 'relative', mb: 2 }}>
+        <Typography variant="h5" className="app-subtitle" gutterBottom>
           Connecting people through events
         </Typography>
-        <Typography variant="body1" sx={{ color: '#37474f', maxWidth: 700, mx: 'auto', mb: 4, zIndex: 1, position: 'relative' }}>
+        <Typography variant="body1" sx={{ color: '#b0b7c3', maxWidth: 700, mx: 'auto', mb: 4 }}>
           EventManager is a platform dedicated to bringing communities together by making it easy to discover, join, and celebrate events of all kinds. Our mission is to empower people to connect, share, and create memorable experiences.
         </Typography>
       </Box>
-      
     </Box>
   );
 }

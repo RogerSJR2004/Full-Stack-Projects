@@ -11,6 +11,7 @@ import Avatar from '@mui/material/Avatar';
 import StarIcon from '@mui/icons-material/Star';
 import '../components/Event.css';
 import { useNavigate } from 'react-router-dom';
+import '../components/auth-dark.css';
 
 const allEvents = [
   {
@@ -65,40 +66,42 @@ export default function Events() {
   const filteredEvents = allEvents.filter(e => e.type === filter);
 
   return (
-    <Box className="events-bg" sx={{ width: '100%', minHeight: '100vh', background: 'linear-gradient(120deg, #e0eafc 0%, #cfdef3 100%)', py: 8, px: { xs: 2, md: 8 } }}>
-      <Typography variant="h2" className="events-title" align="center" gutterBottom sx={{ fontWeight: 900, color: 'primary.main', mb: 4 }}>
-        Events
-      </Typography>
-      {/* Filter Bar */}
-      <Stack direction="row" spacing={2} justifyContent="center" alignItems="center" sx={{ mb: 5 }}>
-        {filterOptions.map(opt => (
-          <Chip
-            key={opt.value}
-            label={opt.label}
-            color={filter === opt.value ? 'primary' : 'default'}
-            onClick={() => setFilter(opt.value)}
-            sx={{ fontWeight: 600, fontSize: '1rem', px: 2, py: 1, borderRadius: 2, cursor: 'pointer' }}
-          />
-        ))}
-      </Stack>
-      {/* Events Gallery */}
-      <Box className="events-gallery" sx={{ display: 'flex', flexWrap: 'wrap', gap: 4, justifyContent: 'center', alignItems: 'stretch' }}>
-        {filteredEvents.map((event, idx) => (
-          <Card key={idx} className="event-card" sx={{ width: 340, boxShadow: 6, borderRadius: 4, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
-            <CardMedia
-              component="img"
-              height="180"
-              image={event.image}
-              alt={event.name}
-              sx={{ objectFit: 'cover' }}
+    <Box className="app-bg-root">
+      <Box className="app-glass-section" sx={{ width: '100%', minHeight: '100vh', py: 6, px: { xs: 2, md: 8 } }}>
+        <Typography variant="h2" className="app-title" align="center" gutterBottom>
+          Events
+        </Typography>
+        {/* Filter Bar */}
+        <Stack direction="row" spacing={2} justifyContent="center" alignItems="center" sx={{ mb: 5 }}>
+          {filterOptions.map(opt => (
+            <Chip
+              key={opt.value}
+              label={opt.label}
+              color={filter === opt.value ? 'primary' : 'default'}
+              onClick={() => setFilter(opt.value)}
+              sx={{ fontWeight: 600, fontSize: '1rem', px: 2, py: 1, borderRadius: 2, cursor: 'pointer', background: filter === opt.value ? '#7bb6ff' : 'rgba(36,41,54,0.92)', color: filter === opt.value ? '#232a36' : '#e3e9f7', border: filter === opt.value ? '2px solid #7bb6ff' : '2px solid #232a36' }}
             />
-            <CardContent sx={{ flexGrow: 1 }}>
-              <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>{event.name}</Typography>
-              <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 1 }}>{event.date}</Typography>
-              <Typography variant="body2" color="text.primary" sx={{ mb: 2 }}>{event.description}</Typography>
-            </CardContent>
-          </Card>
-        ))}
+          ))}
+        </Stack>
+        {/* Events Gallery */}
+        <Box className="events-gallery" sx={{ display: 'flex', flexWrap: 'wrap', gap: 4, justifyContent: 'center', alignItems: 'stretch' }}>
+          {filteredEvents.map((event, idx) => (
+            <Card key={idx} className="event-card" sx={{ width: 340, borderRadius: 4, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+              <CardMedia
+                component="img"
+                height="180"
+                image={event.image}
+                alt={event.name}
+                sx={{ objectFit: 'cover' }}
+              />
+              <CardContent sx={{ flexGrow: 1 }}>
+                <Typography variant="h6" sx={{ fontWeight: 700, color: '#7bb6ff', mb: 1 }}>{event.name}</Typography>
+                <Typography variant="subtitle2" sx={{ color: '#b0b7c3', mb: 1 }}>{event.date}</Typography>
+                <Typography variant="body2" sx={{ color: '#e3e9f7', mb: 2 }}>{event.description}</Typography>
+              </CardContent>
+            </Card>
+          ))}
+        </Box>
       </Box>
     </Box>
   );

@@ -1,20 +1,12 @@
 import React from 'react';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Box, Button, TextField, Typography, InputAdornment, IconButton } from '@mui/material';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import '../components/auth-dark.css';
 
-
-import {
-  Box,
-  Button,
-  TextField,
-  Typography,
-  Paper,
-} from '@mui/material';
-
-//  Validation Schema using Yup
 const validationSchema = Yup.object({
   emailAddress: Yup.string()
     .email('Invalid email format')
@@ -24,75 +16,41 @@ const validationSchema = Yup.object({
     .required('Password is required'),
 });
 
-
-
-const styles = {
-  container: {
-    height: '100vh',
-    width: '100vw',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#f3f3f3',
-  },
-  paper: {
-    padding: '30px',
-    width: '350px',
-    borderRadius: '8px',
-    backgroundColor: '#fff',
-    boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
-  },
-  title: {
-    textAlign: 'center',
-    marginBottom: '20px',
-    fontWeight: 600,
-  },
-  button: {
-    marginTop: '16px',
-    padding: '10px',
-    fontSize: '16px',
-    backgroundColor: '#1976d2',
-    color: 'white',
-  },
-};
-
-
 export default function Login() {
+  const navigate = useNavigate();
+  const [showPassword, setShowPassword] = React.useState(false);
 
   const handleLogin = async (values, { setSubmitting }) => {
-  try {
-    const response = await axios.post('http://localhost:8080/ems/v1/login', values);
-    console.log('Login Success:', response.data);
-    alert('Login Successful');
-
-    
-    
-    navigate('/dashboard');
-
-  } catch (error) {
-    console.error('Login Error:', error.response?.data || error.message);
-    alert('Login Failed: ' + (error.response?.data || error.message));
-  } finally {
-    setSubmitting(false);
-  }
-};
-  const navigate = useNavigate();
-
+    try {
+      const response = await axios.post('http://localhost:8080/ems/v1/login', values);
+      alert('Login Successful');
+      navigate('/dashboard');
+    } catch (error) {
+      alert('Login Failed: ' + (error.response?.data || error.message));
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
-    <Formik
-      initialValues={{ emailAddress: '', password: '' }}
-      validationSchema={validationSchema}
-      onSubmit={handleLogin}
-    >
-      {({ handleChange, handleBlur, values, errors, touched }) => (
-        <Box style={styles.container}>
-          <Paper elevation={3} style={styles.paper}>
-            <Typography variant="h5" style={styles.title}>
-              Login
-            </Typography>
-
-            <Form>
+    <Box className="auth-bg-root">
+      <Box className="auth-glass-card">
+        <Box className="auth-icon-wrapper">
+          <LockOutlinedIcon className="auth-icon" />
+        </Box>
+        <Typography variant="h4" className="auth-title" gutterBottom>
+          Welcome Back
+        </Typography>
+        <Typography variant="subtitle1" className="auth-subtitle" gutterBottom>
+          Sign in to your account
+        </Typography>
+        <Formik
+          initialValues={{ emailAddress: '', password: '' }}
+          validationSchema={validationSchema}
+          onSubmit={handleLogin}
+        >
+          {({ handleChange, handleBlur, values, errors, touched, isSubmitting }) => (
+            <Form autoComplete="off">
               <TextField
                 fullWidth
                 label="Email"
@@ -103,47 +61,59 @@ export default function Login() {
                 onBlur={handleBlur}
                 error={touched.emailAddress && Boolean(errors.emailAddress)}
                 helperText={touched.emailAddress && errors.emailAddress}
-                style={{ marginBottom: '16px' }}
+                className="auth-input"
+                margin="normal"
+                autoComplete="off"
               />
-
               <TextField
                 fullWidth
                 label="Password"
                 name="password"
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 value={values.password}
                 onChange={handleChange}
                 onBlur={handleBlur}
                 error={touched.password && Boolean(errors.password)}
                 helperText={touched.password && errors.password}
-                style={{ marginBottom: '8px' }}
+                className="auth-input"
+                margin="normal"
+                autoComplete="off"
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={() => setShowPassword((show) => !show)}
+                        edge="end"
+                        size="small"
+                        tabIndex={-1}
+                      >
+                        {showPassword ? <span role="img" aria-label="hide">🙈</span> : <span role="img" aria-label="show">👁️</span>}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
               />
-
               <Button
                 type="submit"
                 fullWidth
                 variant="contained"
-                style={styles.button}
+                className="auth-btn"
+                disabled={isSubmitting}
               >
                 Login
               </Button>
-               <Typography variant="body2" sx={{ mt: 2 }}>
+              <Typography variant="body2" align="center" className="auth-link-text">
                 Not having account?{' '}
-                <Link to="/signup" style={{ color: 'blue' }}>
-                  Signup here
-                </Link>
+                <Link to="/signup" className="auth-link">Signup here</Link>
               </Typography>
-
-              <Typography variant="body2" sx={{ mt: 1 }}>
-                <Link to="/" style={{ color: '#007BFF', textDecoration: 'none' }}>
-                  ← Back to Home
-                </Link>
+              <Typography variant="body2" align="center" className="auth-link-text">
+                <Link to="/" className="auth-link">← Back to Home</Link>
               </Typography>
             </Form>
-             
-          </Paper>
-        </Box>
-      )}
-    </Formik>
+          )}
+        </Formik>
+      </Box>
+    </Box>
   );
 } 
