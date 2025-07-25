@@ -13,15 +13,49 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Grid from '@mui/material/Grid';
 import { Link as RouterLink } from 'react-router-dom';
 import Footer from '../../components/Footer';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
+import PeopleIcon from '@mui/icons-material/People';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
+import GroupIcon from '@mui/icons-material/Group';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
 import '../../components/auth-dark.css';
 
 const FILTERS = [
-  { label: 'My Events', value: 'my' },
-  { label: 'Upcoming', value: 'upcoming' },
-  { label: 'Past', value: 'past' },
+  { label: 'My Events', value: 'my', icon: <EventAvailableIcon sx={{ mr: 1 }} /> },
+  { label: 'Available', value: 'available', icon: <CalendarTodayIcon sx={{ mr: 1 }} /> },
+  { label: 'Past Events', value: 'past', icon: <CheckCircleIcon sx={{ mr: 1 }} /> },
+];
+
+// Mock data for dashboard stats
+const dashboardStats = [
+  {
+    title: 'Requested Events',
+    value: 8,
+    icon: <EventAvailableIcon sx={{ fontSize: 40, color: '#7bb6ff' }} />,
+    color: '#7bb6ff',
+    bgGradient: 'linear-gradient(135deg, rgba(123, 182, 255, 0.1) 0%, rgba(123, 182, 255, 0.05) 100%)'
+  },
+  {
+    title: 'Events Attended',
+    value: 24,
+    icon: <PeopleIcon sx={{ fontSize: 40, color: '#4caf50' }} />,
+    color: '#4caf50',
+    bgGradient: 'linear-gradient(135deg, rgba(76, 175, 80, 0.1) 0%, rgba(76, 175, 80, 0.05) 100%)'
+  },
+  {
+    title: 'Available Events',
+    value: 156,
+    icon: <CalendarTodayIcon sx={{ fontSize: 40, color: '#ff9800' }} />,
+    color: '#ff9800',
+    bgGradient: 'linear-gradient(135deg, rgba(255, 152, 0, 0.1) 0%, rgba(255, 152, 0, 0.05) 100%)'
+  }
 ];
 
 function Header({ onLogout }) {
@@ -65,7 +99,8 @@ export default function UserDashboard() {
   const [showRegister, setShowRegister] = useState(false);
   const [filter, setFilter] = useState('my');
   const [events, setEvents] = useState([]);
-  const userName = 'User'; // Replace with actual user name from context/auth
+  const [stats, setStats] = useState(dashboardStats.map(() => 0));
+  const userName = 'Roger'; // Replace with actual user name from context/auth
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -82,6 +117,21 @@ export default function UserDashboard() {
       }
     };
     fetchEvents();
+  }, []);
+
+  // Animate stats
+  useEffect(() => {
+    const intervals = dashboardStats.map((stat, i) =>
+      setInterval(() => {
+        setStats(prev => {
+          const next = [...prev];
+          if (next[i] < stat.value) next[i] += Math.ceil(stat.value / 40);
+          if (next[i] > stat.value) next[i] = stat.value;
+          return next;
+        });
+      }, 30)
+    );
+    return () => intervals.forEach(clearInterval);
   }, []);
 
   const handleEventClick = event => {
@@ -101,8 +151,8 @@ export default function UserDashboard() {
   let filteredEvents = events;
   if (filter === 'my') {
     filteredEvents = events.filter(e => e.owner === 'me');
-  } else if (filter === 'upcoming') {
-    filteredEvents = events.filter(e => e.status === 'upcoming');
+  } else if (filter === 'available') {
+    filteredEvents = events.filter(e => e.status === 'available');
   } else if (filter === 'past') {
     filteredEvents = events.filter(e => e.status === 'past');
   }
@@ -110,32 +160,202 @@ export default function UserDashboard() {
   return (
     <Box className="app-bg-root" sx={{ minHeight: '100vh' }}>
       <Header />
+      
       {/* Hero Section */}
-      <Box className="app-glass-section" sx={{ py: 4, textAlign: 'center', bgcolor: 'transparent', maxWidth: 900, mx: 'auto', mt: 4, mb: 3 }}>
-        <Typography variant="h4" className="app-title" gutterBottom>
-          Welcome, {userName}!
-        </Typography>
-        <Typography variant="subtitle1" className="app-subtitle">Manage and explore your events easily.</Typography>
+      <Box sx={{
+        position: 'relative',
+        py: { xs: 8, md: 12 },
+        px: { xs: 2, md: 4 },
+        textAlign: 'center',
+        background: 'linear-gradient(rgba(36,41,54,0.8), rgba(36,41,54,0.9)), url("https://images.unsplash.com/photo-1501281668785-207828eb24e3?auto=format&fit=crop&w=1200&q=80")',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        borderRadius: '0 0 2rem 2rem',
+        mb: 6,
+        overflow: 'hidden'
+      }}>
+        {/* Background decoration */}
+        <Box sx={{
+          position: 'absolute',
+          top: -50,
+          right: -50,
+          width: 200,
+          height: 200,
+          background: 'radial-gradient(circle, rgba(123, 182, 255, 0.1) 0%, transparent 70%)',
+          borderRadius: '50%',
+          zIndex: 0
+        }} />
+        <Box sx={{
+          position: 'absolute',
+          bottom: -30,
+          left: -30,
+          width: 150,
+          height: 150,
+          background: 'radial-gradient(circle, rgba(123, 182, 255, 0.08) 0%, transparent 70%)',
+          borderRadius: '50%',
+          zIndex: 0
+        }} />
+        
+        <Box sx={{ position: 'relative', zIndex: 1, maxWidth: 1200, mx: 'auto' }}>
+          <Avatar sx={{ width: 80, height: 80, mx: 'auto', mb: 3, border: '3px solid #7bb6ff', boxShadow: '0 8px 32px rgba(123, 182, 255, 0.3)' }}>
+            {userName.charAt(0)}
+          </Avatar>
+          <Typography variant="h2" sx={{ fontWeight: 900, color: '#fff', mb: 2, fontSize: { xs: '2.2rem', md: '3.2rem' } }}>
+            Welcome back, {userName}!
+          </Typography>
+          <Typography variant="h5" sx={{ color: '#7bb6ff', mb: 3, fontWeight: 600 }}>
+            Ready to discover your next adventure?
+          </Typography>
+          <Typography variant="body1" sx={{ color: '#b0b7c3', maxWidth: 600, mx: 'auto', mb: 4 }}>
+            Your dashboard is your command center for all things events. Track your activities, discover new opportunities, and stay connected with your community.
+          </Typography>
+        </Box>
       </Box>
+
+      {/* Stats Cards */}
+      <Box sx={{ py: { xs: 4, md: 6 }, px: { xs: 2, md: 4 }, maxWidth: 1200, mx: 'auto', mb: 6 }}>
+        <Grid container spacing={3}>
+          {dashboardStats.map((stat, index) => (
+            <Grid item xs={12} sm={4} key={stat.title}>
+              <Card sx={{
+                p: 4,
+                textAlign: 'center',
+                background: stat.bgGradient,
+                backdropFilter: 'blur(10px)',
+                border: `1px solid ${stat.color}20`,
+                borderRadius: 3,
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                  transform: 'translateY(-8px)',
+                  boxShadow: `0 20px 40px ${stat.color}15`,
+                  borderColor: `${stat.color}40`
+                }
+              }}>
+                <Box sx={{ mb: 2 }}>
+                  {stat.icon}
+                </Box>
+                <Typography variant="h3" sx={{ color: stat.color, fontWeight: 900, mb: 1 }}>
+                  {stats[index]}
+                </Typography>
+                <Typography variant="h6" sx={{ color: '#fff', fontWeight: 700 }}>
+                  {stat.title}
+                </Typography>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
+
       {/* Filter Section */}
-      <Box className="app-glass-section" sx={{ maxWidth: 900, mx: 'auto', mb: 3, py: 2 }}>
-        <Stack direction="row" spacing={2} justifyContent="center" sx={{ my: 2 }}>
+      <Box sx={{ py: { xs: 4, md: 6 }, px: { xs: 2, md: 4 }, maxWidth: 1200, mx: 'auto', mb: 6 }}>
+        <Typography variant="h3" sx={{ textAlign: 'center', fontWeight: 700, color: '#fff', mb: 4, fontSize: { xs: '2rem', md: '2.5rem' } }}>
+          Your Events
+        </Typography>
+        <Stack direction="row" spacing={2} justifyContent="center" sx={{ mb: 5 }}>
           {FILTERS.map(tag => (
             <Chip
               key={tag.value}
               label={tag.label}
+              icon={tag.icon}
               color={filter === tag.value ? 'primary' : 'default'}
               onClick={() => setFilter(tag.value)}
               clickable
-              sx={{ fontWeight: 700, fontSize: 16, px: 2, py: 1, borderRadius: 2, background: filter === tag.value ? '#7bb6ff' : 'rgba(36,41,54,0.92)', color: filter === tag.value ? '#232a36' : '#e3e9f7', border: filter === tag.value ? '2px solid #7bb6ff' : '2px solid #232a36' }}
+              sx={{
+                fontWeight: 700,
+                fontSize: '1.1rem',
+                px: 2.5,
+                py: 1.5,
+                borderRadius: 2,
+                background: filter === tag.value ? '#7bb6ff' : 'rgba(36,41,54,0.92)',
+                color: filter === tag.value ? '#232a36' : '#e3e9f7',
+                border: filter === tag.value ? '2px solid #7bb6ff' : '2px solid #232a36',
+                boxShadow: filter === tag.value ? '0 4px 16px rgba(123, 182, 255, 0.15)' : 'none',
+                transition: 'all 0.2s',
+                '&:hover': {
+                  background: filter === tag.value ? '#7bb6ff' : 'rgba(36,41,54,0.95)',
+                  transform: 'translateY(-2px)'
+                }
+              }}
             />
           ))}
         </Stack>
       </Box>
+
       {/* Events Section */}
-      <Box className="app-glass-section" sx={{ maxWidth: 900, mx: 'auto', px: 2, pb: 4 }}>
-        <EventList events={filteredEvents} onEventClick={handleEventClick} />
+      <Box sx={{ py: { xs: 4, md: 6 }, px: { xs: 2, md: 4 }, maxWidth: 1200, mx: 'auto', mb: 6 }}>
+        <Box sx={{ background: 'rgba(36,41,54,0.6)', borderRadius: 4, p: 4, backdropFilter: 'blur(10px)', border: '1px solid rgba(123, 182, 255, 0.1)' }}>
+          <EventList events={filteredEvents} onEventClick={handleEventClick} />
+        </Box>
       </Box>
+
+      {/* CTA Section */}
+      <Box sx={{
+        py: { xs: 6, md: 8 },
+        px: { xs: 2, md: 4 },
+        textAlign: 'center',
+        background: 'linear-gradient(135deg, rgba(123, 182, 255, 0.1) 0%, rgba(224, 231, 255, 0.05) 100%)',
+        borderRadius: 4,
+        maxWidth: 1200,
+        mx: 'auto',
+        mb: 6,
+        boxShadow: 2
+      }}>
+        <Typography variant="h3" sx={{ fontWeight: 700, color: '#fff', mb: 3, fontSize: { xs: '2rem', md: '2.5rem' } }}>
+          Ready to Create Something Amazing?
+        </Typography>
+        <Typography variant="h6" sx={{ color: '#b0b7c3', mb: 4, maxWidth: 600, mx: 'auto', lineHeight: 1.6 }}>
+          Host your own event and bring people together. Share your passion, knowledge, or simply create a space for connection.
+        </Typography>
+        <Box sx={{ display: 'flex', gap: 3, justifyContent: 'center', flexWrap: 'wrap' }}>
+          <Button
+            component={RouterLink}
+            to="/addevent"
+            variant="contained"
+            size="large"
+            sx={{
+              px: 4,
+              py: 1.5,
+              fontSize: '1.1rem',
+              fontWeight: 700,
+              borderRadius: 3,
+              background: '#7bb6ff',
+              color: '#232a36',
+              boxShadow: '0 8px 32px rgba(123, 182, 255, 0.3)',
+              '&:hover': {
+                background: '#6ba5ef',
+                boxShadow: '0 12px 40px rgba(123, 182, 255, 0.4)',
+                transform: 'translateY(-2px)'
+              }
+            }}
+          >
+            Create Event
+          </Button>
+          <Button
+            component={RouterLink}
+            to="/events"
+            variant="outlined"
+            size="large"
+            sx={{
+              px: 4,
+              py: 1.5,
+              fontSize: '1.1rem',
+              fontWeight: 700,
+              borderRadius: 3,
+              borderWidth: 2,
+              borderColor: '#7bb6ff',
+              color: '#7bb6ff',
+              '&:hover': {
+                borderColor: '#7bb6ff',
+                background: 'rgba(123, 182, 255, 0.1)',
+                transform: 'translateY(-2px)'
+              }
+            }}
+          >
+            Explore More
+          </Button>
+        </Box>
+      </Box>
+
       {/* Event Details Modal */}
       {selectedEvent && (
         <div className="event-details-modal">
@@ -144,6 +364,7 @@ export default function UserDashboard() {
           {showRegister && <RegisterForm onSubmit={() => setShowRegister(false)} />}
         </div>
       )}
+      
       <Footer />
     </Box>
   );
