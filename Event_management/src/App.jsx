@@ -16,7 +16,7 @@ import { useEffect } from 'react';
 
 function App() {
   const location = useLocation();
-  const hideNavAndFooter = location.pathname.startsWith('/dashboard') || location.pathname.startsWith('/admin');
+  const hideNavAndFooter = location.pathname.startsWith('/dashboard') || location.pathname.startsWith('/admin') || location.pathname.startsWith('/addevent');
   return (
     <>
       {!hideNavAndFooter && <Navbar />}
