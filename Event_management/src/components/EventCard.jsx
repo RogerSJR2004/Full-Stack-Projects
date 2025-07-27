@@ -48,7 +48,7 @@ export default function EventCard({ event, onClick }) {
       const res = await fetch(`http://localhost:8080/ems/v1/event/${event.id}/enroll`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form)
+        body: JSON.stringify({ ...form, status: 1 })
       });
       if (!res.ok) throw new Error('Failed to enroll');
       setSnackbar({ open: true, message: 'Enrollment successful!', severity: 'success' });

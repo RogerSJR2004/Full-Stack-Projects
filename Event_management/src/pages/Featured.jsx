@@ -145,64 +145,36 @@ export default function Featured() {
   const handleCloseGallery = () => setGalleryOpen(false);
 
   return (
-    <Box className="app-bg-root" sx={{ minHeight: '100vh' }}>
-      {/* Moments Slider */}
-      <Box sx={{ maxWidth: 1100, mx: 'auto', mb: 6, borderRadius: 4, overflow: 'hidden', boxShadow: 3 }}>
-        <Swiper
-          modules={[Autoplay, Pagination, EffectFade]}
-          effect="fade"
-          autoplay={{ delay: 3500, disableOnInteraction: false }}
-          pagination={{ clickable: true }}
-          loop
-          style={{ borderRadius: 16 }}
-        >
-          {momentsImages.map((img, idx) => (
-            <SwiperSlide key={idx}>
-              <Box sx={{ position: 'relative', height: { xs: 220, md: 400 }, width: '100%' }}>
-                <img src={img.url} alt={img.caption} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 16 }} />
-                <Box sx={{ position: 'absolute', bottom: 0, left: 0, width: '100%', bgcolor: 'rgba(36,41,54,0.7)', color: '#fff', py: 2, px: 3, borderRadius: '0 0 16px 16px' }}>
-                  <Typography variant="h5" sx={{ fontWeight: 700 }}>{img.caption}</Typography>
-                </Box>
-              </Box>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </Box>
-
-      {/* Achievements/Stats Section */}
-      <Box sx={{ maxWidth: 1100, mx: 'auto', mb: 8 }}>
-        <Grid container spacing={4} justifyContent="center">
-          {stats.map((stat, i) => (
-            <Grid item xs={12} sm={4} key={stat.label}>
-              <Box sx={{ textAlign: 'center', p: 4, background: 'rgba(36,41,54,0.7)', borderRadius: 3, boxShadow: 2 }}>
-                {stat.icon}
-                <Typography variant="h3" sx={{ color: '#7bb6ff', fontWeight: 900, mt: 1, mb: 0 }}>{counts[i]}</Typography>
-                <Typography variant="h6" sx={{ color: '#fff', fontWeight: 700 }}>{stat.label}</Typography>
-              </Box>
-            </Grid>
-          ))}
-        </Grid>
-      </Box>
-
+    <Box className="app-bg-root" sx={{ minHeight: '100vh', background: 'linear-gradient(135deg, #232a36 0%, #7bb6ff11 100%)' }}>
       {/* Hero Section */}
       <Box sx={{
         py: { xs: 7, md: 10 },
         px: { xs: 2, md: 4 },
         textAlign: 'center',
-        background: 'linear-gradient(135deg, rgba(123, 182, 255, 0.08) 0%, rgba(224, 231, 255, 0.03) 100%)',
+        background: 'linear-gradient(135deg, rgba(123, 182, 255, 0.10) 0%, rgba(224, 231, 255, 0.04) 100%)',
         mb: 6,
         borderRadius: '0 0 2rem 2rem',
-        boxShadow: '0 8px 32px rgba(123, 182, 255, 0.08)'
+        boxShadow: '0 8px 32px rgba(123, 182, 255, 0.08)',
+        position: 'relative',
+        overflow: 'hidden',
       }}>
-        <Typography variant="h2" className="app-title" sx={{ fontWeight: 900, color: '#fff', mb: 2, fontSize: { xs: '2.2rem', md: '3.2rem' } }}>
-          Explore Events
-        </Typography>
-        <Typography variant="h5" className="app-subtitle" sx={{ color: '#7bb6ff', mb: 2, fontWeight: 600 }}>
-          Find your next experience
-        </Typography>
-        <Typography variant="body1" sx={{ color: '#b0b7c3', maxWidth: 600, mx: 'auto', mb: 2 }}>
-          Browse through our curated list of events. Filter by type to see past highlights, featured events, and more!
-        </Typography>
+        {/* Animated background shapes */}
+        <Box sx={{ position: 'absolute', top: -60, left: -60, width: 180, height: 180, background: 'radial-gradient(circle, #7bb6ff33 0%, transparent 70%)', borderRadius: '50%', zIndex: 0 }} />
+        <Box sx={{ position: 'absolute', bottom: -40, right: -40, width: 120, height: 120, background: 'radial-gradient(circle, #7bb6ff22 0%, transparent 70%)', borderRadius: '50%', zIndex: 0 }} />
+        <Box sx={{ position: 'relative', zIndex: 1 }}>
+          <Typography variant="h2" className="app-title" sx={{ fontWeight: 900, mb: 2, fontSize: { xs: '2.2rem', md: '3.2rem' }, background: 'linear-gradient(90deg, #fff 30%, #7bb6ff 90%)', backgroundClip: 'text', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', letterSpacing: 2 }}>
+            Explore Events
+          </Typography>
+          <Typography variant="h5" className="app-subtitle" sx={{ color: '#7bb6ff', mb: 2, fontWeight: 700, letterSpacing: 1 }}>
+            Find your next experience
+          </Typography>
+          <Typography variant="body1" sx={{ color: '#b0b7c3', maxWidth: 600, mx: 'auto', mb: 2, fontWeight: 500, fontSize: '1.15rem' }}>
+            Browse through our curated list of events. Filter by type to see past highlights, featured events, and more!
+          </Typography>
+          <Button variant="contained" size="large" sx={{ mt: 3, fontWeight: 700, px: 5, py: 1.5, fontSize: '1.1rem', borderRadius: 3, background: 'linear-gradient(90deg, #7bb6ff 0%, #e0e7ff 100%)', color: '#232a36', boxShadow: '0 8px 32px rgba(123, 182, 255, 0.18)', '&:hover': { background: '#7bb6ff', color: '#fff' } }} href="/events">
+            View All Events
+          </Button>
+        </Box>
       </Box>
 
       {/* Filter Bar */}
@@ -214,7 +186,7 @@ export default function Featured() {
             icon={opt.icon}
             color={filter === opt.value ? 'primary' : 'default'}
             onClick={() => setFilter(opt.value)}
-            sx={{ fontWeight: 700, fontSize: '1.1rem', px: 2.5, py: 1.5, borderRadius: 2, cursor: 'pointer', background: filter === opt.value ? '#7bb6ff' : 'rgba(36,41,54,0.92)', color: filter === opt.value ? '#232a36' : '#e3e9f7', border: filter === opt.value ? '2px solid #7bb6ff' : '2px solid #232a36', boxShadow: filter === opt.value ? '0 4px 16px rgba(123, 182, 255, 0.15)' : 'none', transition: 'all 0.2s' }}
+            sx={{ fontWeight: 700, fontSize: '1.1rem', px: 2.5, py: 1.5, borderRadius: 99, cursor: 'pointer', background: filter === opt.value ? 'linear-gradient(90deg, #7bb6ff 0%, #e0e7ff 100%)' : 'rgba(36,41,54,0.92)', color: filter === opt.value ? '#232a36' : '#e3e9f7', border: filter === opt.value ? '2px solid #7bb6ff' : '2px solid #232a36', boxShadow: filter === opt.value ? '0 4px 16px rgba(123, 182, 255, 0.15)' : 'none', transition: 'all 0.2s', '&:hover': { transform: 'scale(1.07)', boxShadow: '0 6px 20px #7bb6ff33' } }}
           />
         ))}
       </Stack>
@@ -242,13 +214,25 @@ export default function Featured() {
                   overflow: 'hidden', 
                   display: 'flex', 
                   flexDirection: 'column',
-                  background: 'rgba(36,41,54,0.7)',
-                  boxShadow: '0 8px 32px rgba(123, 182, 255, 0.10)',
-                  border: '1px solid rgba(123, 182, 255, 0.10)',
+                  background: 'rgba(36,41,54,0.55)',
+                  boxShadow: '0 8px 32px rgba(123, 182, 255, 0.13)',
+                  border: '1.5px solid rgba(123, 182, 255, 0.13)',
                   transition: 'transform 0.2s, box-shadow 0.2s',
+                  position: 'relative',
+                  '&:before': {
+                    content: '""',
+                    display: 'block',
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: 6,
+                    background: 'linear-gradient(90deg, #7bb6ff 0%, #e0e7ff 100%)',
+                    zIndex: 1,
+                  },
                   '&:hover': {
-                    transform: 'translateY(-8px) scale(1.03)',
-                    boxShadow: '0 16px 40px rgba(123, 182, 255, 0.18)',
+                    transform: 'translateY(-8px) scale(1.04)',
+                    boxShadow: '0 16px 40px rgba(123, 182, 255, 0.22)',
                     borderColor: 'rgba(123, 182, 255, 0.25)'
                   }
                 }}
@@ -258,23 +242,23 @@ export default function Featured() {
                   height="180"
                   image={event.image}
                   alt={event.name}
-                  sx={{ objectFit: 'cover' }}
+                  sx={{ objectFit: 'cover', filter: 'brightness(0.97)' }}
                 />
-                <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
+                <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', position: 'relative', zIndex: 2 }}>
                   <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 1 }}>
-                    <Chip label={event.type.charAt(0).toUpperCase() + event.type.slice(1)} size="small" sx={{ background: '#7bb6ff', color: '#232a36', fontWeight: 700 }} />
+                    <Chip label={event.type.charAt(0).toUpperCase() + event.type.slice(1)} size="small" sx={{ background: '#7bb6ff', color: '#232a36', fontWeight: 700, borderRadius: 2, fontSize: 13, letterSpacing: 0.5 }} />
                   </Stack>
-                  <Typography variant="h6" sx={{ fontWeight: 700, color: '#7bb6ff', mb: 1 }}>{event.name}</Typography>
-                  <Typography variant="subtitle2" sx={{ color: '#b0b7c3', mb: 1 }}>{event.date}</Typography>
-                  <Typography variant="body2" sx={{ color: '#e3e9f7', mb: 2, flexGrow: 1 }}>{event.description}</Typography>
+                  <Typography variant="h6" sx={{ fontWeight: 800, color: '#7bb6ff', mb: 1, letterSpacing: 1 }}>{event.name}</Typography>
+                  <Typography variant="subtitle2" sx={{ color: '#b0b7c3', mb: 1, fontWeight: 600 }}>{event.date}</Typography>
+                  <Typography variant="body2" sx={{ color: '#e3e9f7', mb: 2, flexGrow: 1, fontWeight: 500 }}>{event.description}</Typography>
                   {event.feedback && event.feedback.length > 0 && (
                     <Box sx={{ mt: 2 }}>
-                      <Typography variant="subtitle2" sx={{ color: '#7bb6ff', fontWeight: 600, mb: 1 }}>Feedback</Typography>
+                      <Typography variant="subtitle2" sx={{ color: '#7bb6ff', fontWeight: 700, mb: 1 }}>Feedback</Typography>
                       <Stack direction="row" spacing={1}>
                         {event.feedback.map((fb, i) => (
-                          <Box key={i} sx={{ display: 'flex', alignItems: 'center', background: 'rgba(123,182,255,0.08)', borderRadius: 2, px: 1.5, py: 0.5, mr: 1 }}>
-                            <Avatar src={fb.avatar} alt={fb.user} sx={{ width: 28, height: 28, mr: 1 }} />
-                            <Typography variant="body2" sx={{ color: '#fff', fontWeight: 600, mr: 0.5 }}>{fb.user}</Typography>
+                          <Box key={i} sx={{ display: 'flex', alignItems: 'center', background: 'rgba(123,182,255,0.10)', borderRadius: 2, px: 1.5, py: 0.5, mr: 1, boxShadow: '0 2px 8px #7bb6ff22' }}>
+                            <Avatar src={fb.avatar} alt={fb.user} sx={{ width: 28, height: 28, mr: 1, border: '2px solid #7bb6ff', boxShadow: '0 2px 8px #7bb6ff44' }} />
+                            <Typography variant="body2" sx={{ color: '#fff', fontWeight: 700, mr: 0.5 }}>{fb.user}</Typography>
                             <StarIcon sx={{ color: '#FFD700', fontSize: 18, verticalAlign: 'middle', mr: 0.2 }} />
                             <Typography variant="body2" sx={{ color: '#FFD700', fontWeight: 700 }}>{fb.rating}</Typography>
                           </Box>
@@ -291,9 +275,17 @@ export default function Featured() {
                       color: '#7bb6ff',
                       fontWeight: 700,
                       borderRadius: 2,
+                      px: 2.5,
+                      py: 1,
+                      fontSize: '1rem',
+                      letterSpacing: 0.5,
+                      background: 'rgba(123,182,255,0.06)',
+                      boxShadow: '0 2px 8px #7bb6ff22',
                       '&:hover': {
                         borderColor: '#7bb6ff',
-                        backgroundColor: 'rgba(123, 182, 255, 0.1)'
+                        backgroundColor: 'rgba(123, 182, 255, 0.13)',
+                        color: '#232a36',
+                        boxShadow: '0 4px 16px #7bb6ff33',
                       }
                     }}
                     onClick={() => handleOpenGallery(event.gallery)}
@@ -309,9 +301,9 @@ export default function Featured() {
 
       {/* Gallery Modal */}
       {galleryOpen && (
-        <Box sx={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', bgcolor: 'rgba(36,41,54,0.92)', zIndex: 2000, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <Box sx={{ position: 'relative', width: { xs: '90vw', md: 600 }, bgcolor: '#232a36', borderRadius: 4, boxShadow: 4, p: 3 }}>
-            <Button onClick={handleCloseGallery} sx={{ position: 'absolute', top: 8, right: 8, color: '#7bb6ff', fontWeight: 700 }}>Close</Button>
+        <Box sx={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', bgcolor: 'rgba(36,41,54,0.92)', zIndex: 2000, display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(6px)' }}>
+          <Box sx={{ position: 'relative', width: { xs: '90vw', md: 600 }, bgcolor: 'rgba(36,41,54,0.98)', borderRadius: 4, boxShadow: 8, p: 3, border: '2px solid #7bb6ff33' }}>
+            <Button onClick={handleCloseGallery} sx={{ position: 'absolute', top: 8, right: 8, color: '#7bb6ff', fontWeight: 700, background: 'rgba(123,182,255,0.08)', borderRadius: 2, px: 2, py: 0.5, '&:hover': { background: '#7bb6ff', color: '#232a36' } }}>Close</Button>
             <Swiper
               modules={[Pagination]}
               pagination={{ clickable: true }}
@@ -319,7 +311,7 @@ export default function Featured() {
             >
               {galleryImages.map((img, idx) => (
                 <SwiperSlide key={idx}>
-                  <img src={img} alt={`Gallery ${idx + 1}`} style={{ width: '100%', height: 340, objectFit: 'cover', borderRadius: 12 }} />
+                  <img src={img} alt={`Gallery ${idx + 1}`} style={{ width: '100%', height: 340, objectFit: 'cover', borderRadius: 12, boxShadow: '0 4px 24px #7bb6ff22' }} />
                 </SwiperSlide>
               ))}
             </Swiper>
@@ -328,16 +320,20 @@ export default function Featured() {
       )}
 
       {/* CTA Banner */}
-      <Box sx={{ textAlign: 'center', py: 8, background: 'linear-gradient(90deg, #7bb6ff 0%, #e0e7ff 100%)', borderRadius: 4, maxWidth: 1100, mx: 'auto', mb: 8, boxShadow: 2 }}>
-        <Typography variant="h4" sx={{ fontWeight: 900, color: '#232a36', mb: 2 }}>
-          Want to be part of our next big moment?
-        </Typography>
-        <Typography variant="h6" sx={{ color: '#232a36', mb: 3 }}>
-          Join us and create memories that last a lifetime!
-        </Typography>
-        <Button variant="contained" size="large" sx={{ fontWeight: 700, px: 5, py: 1.5, fontSize: '1.1rem', borderRadius: 3, background: '#232a36', color: '#7bb6ff', '&:hover': { background: '#7bb6ff', color: '#232a36' } }} href="/signup">
-          Get Started
-        </Button>
+      <Box sx={{ textAlign: 'center', py: 8, background: 'linear-gradient(90deg, #7bb6ff 0%, #e0e7ff 100%)', borderRadius: 4, maxWidth: 1100, mx: 'auto', mb: 8, boxShadow: 4, position: 'relative', overflow: 'hidden' }}>
+        <Box sx={{ position: 'absolute', top: -30, left: -30, width: 120, height: 120, background: 'radial-gradient(circle, #7bb6ff33 0%, transparent 70%)', borderRadius: '50%', zIndex: 0 }} />
+        <Box sx={{ position: 'absolute', bottom: -30, right: -30, width: 120, height: 120, background: 'radial-gradient(circle, #e0e7ff66 0%, transparent 70%)', borderRadius: '50%', zIndex: 0 }} />
+        <Box sx={{ position: 'relative', zIndex: 1 }}>
+          <Typography variant="h4" sx={{ fontWeight: 900, color: '#232a36', mb: 2, letterSpacing: 1 }}>
+            Want to be part of our next big moment?
+          </Typography>
+          <Typography variant="h6" sx={{ color: '#232a36', mb: 3, fontWeight: 600 }}>
+            Join us and create memories that last a lifetime!
+          </Typography>
+          <Button variant="contained" size="large" sx={{ fontWeight: 700, px: 5, py: 1.5, fontSize: '1.1rem', borderRadius: 3, background: '#232a36', color: '#7bb6ff', boxShadow: '0 8px 32px #232a3644', '&:hover': { background: '#7bb6ff', color: '#232a36', boxShadow: '0 12px 40px #7bb6ff33' } }} href="/signup">
+            Get Started
+          </Button>
+        </Box>
       </Box>
     </Box>
   );

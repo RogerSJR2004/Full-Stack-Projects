@@ -27,6 +27,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Menu from '@mui/material/Menu';
 import Avatar from '@mui/material/Avatar';
 import { Link as RouterLink } from 'react-router-dom';
+import Chip from '@mui/material/Chip';
 
 const fadeInUp = keyframes`
   0% {
@@ -446,9 +447,12 @@ export default function AddEvent() {
       </Card>
       {/* Event List Section */}
       {showEvents && (
-        <Box sx={{ width: '100%', maxWidth: 900, mt: 4 }}>
-          <Typography variant="h5" sx={{ mb: 2, fontWeight: 600 }}>All Events</Typography>
-          <Paper sx={{ height: 400, width: '100%' }}>
+        <Card sx={{ width: '100%', maxWidth: 900, mt: 4, borderRadius: 4, boxShadow: 8, backdropFilter: 'blur(8px)', background: 'linear-gradient(135deg, #e0e7ffcc 0%, #7bb6ff22 100%)', p: 3 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+            <EventAvailableIcon sx={{ color: '#7bb6ff', fontSize: 32, mr: 1 }} />
+            <Typography variant="h5" sx={{ fontWeight: 700, letterSpacing: 1 }}>All Events</Typography>
+          </Box>
+          <Paper elevation={0} sx={{ height: 420, width: '100%', background: 'transparent', boxShadow: 'none' }}>
             <DataGrid
               rows={events.map(event => ({
                 id: event.id,
@@ -459,18 +463,35 @@ export default function AddEvent() {
                 raw: event,
               }))}
               columns={[
-                { field: 'id', headerName: 'ID', width: 70 },
-                { field: 'name', headerName: 'Name', width: 180 },
-                { field: 'date', headerName: 'Date', width: 130 },
-                { field: 'location', headerName: 'Location', width: 160 },
-                { field: 'status', headerName: 'Status', width: 100 },
+                { field: 'id', headerName: 'ID', width: 70, headerAlign: 'center', align: 'center' },
+                { field: 'name', headerName: 'Name', width: 180, headerAlign: 'center', align: 'center' },
+                { field: 'date', headerName: 'Date', width: 130, headerAlign: 'center', align: 'center' },
+                { field: 'location', headerName: 'Location', width: 160, headerAlign: 'center', align: 'center' },
+                {
+                  field: 'status',
+                  headerName: 'Status',
+                  width: 110,
+                  headerAlign: 'center',
+                  align: 'center',
+                  renderCell: (params) => (
+                    <Chip
+                      label={params.value}
+                      variant="outlined"
+                      size="small"
+                      color={params.value === 'Active' ? 'success' : 'default'}
+                      sx={{ fontWeight: 600, fontSize: 13, letterSpacing: 0.5 }}
+                    />
+                  ),
+                },
                 {
                   field: 'edit',
                   headerName: 'Edit',
                   width: 90,
                   sortable: false,
+                  headerAlign: 'center',
+                  align: 'center',
                   renderCell: (params) => (
-                    <IconButton edge="end" aria-label="edit" onClick={() => handleEditClick(params.row.raw)}>
+                    <IconButton edge="end" aria-label="edit" onClick={() => handleEditClick(params.row.raw)} sx={{ color: '#7bb6ff', background: '#e0e7ff', '&:hover': { background: '#7bb6ff', color: '#fff' } }}>
                       <EditIcon />
                     </IconButton>
                   ),
@@ -478,11 +499,43 @@ export default function AddEvent() {
               ]}
               initialState={{ pagination: { paginationModel: { page: 0, pageSize: 5 } } }}
               pageSizeOptions={[5, 10]}
-              sx={{ border: 0 }}
+              sx={{
+                border: 0,
+                fontFamily: 'Poppins, Roboto, Arial',
+                background: 'transparent',
+                '& .MuiDataGrid-columnHeaders': {
+                  background: 'linear-gradient(90deg, #7bb6ff 0%, #e0e7ff 100%)',
+                  color: '#232a36',
+                  fontWeight: 800,
+                  fontSize: 16,
+                  borderTopLeftRadius: 12,
+                  borderTopRightRadius: 12,
+                },
+                '& .MuiDataGrid-row': {
+                  background: 'rgba(255,255,255,0.85)',
+                  borderRadius: 2,
+                  transition: 'background 0.2s',
+                  '&:hover': {
+                    background: '#e3f2fd',
+                  },
+                },
+                '& .MuiDataGrid-cell': {
+                  fontSize: 15,
+                  fontWeight: 500,
+                },
+                '& .MuiDataGrid-footerContainer': {
+                  background: 'rgba(123,182,255,0.08)',
+                  borderBottomLeftRadius: 12,
+                  borderBottomRightRadius: 12,
+                },
+                boxShadow: '0 4px 24px rgba(44,62,80,0.10)',
+                borderRadius: 3,
+                mt: 1,
+              }}
               disableRowSelectionOnClick
             />
           </Paper>
-        </Box>
+        </Card>
       )}
       {/* Edit Event*/}
       <Dialog open={editOpen} onClose={handleEditClose} maxWidth="sm" fullWidth>

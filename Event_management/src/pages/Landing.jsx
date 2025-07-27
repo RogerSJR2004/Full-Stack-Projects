@@ -22,6 +22,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
+import { keyframes } from '@mui/system';
 
 const featuredEvents = [
   {
@@ -91,6 +92,12 @@ const features = [
     description: 'Find events both in your neighborhood and around the world'
   }
 ];
+
+const float = keyframes`
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-10px) scale(1.08); }
+  100% { transform: translateY(0); }
+`;
 
 function Landing() {
   const [testimonialIndex, setTestimonialIndex] = useState(0);
@@ -240,37 +247,78 @@ function Landing() {
             fontWeight: 700, 
             color: '#fff',
             mb: 6,
-            fontSize: { xs: '2rem', md: '2.5rem' }
+            fontSize: { xs: '2rem', md: '2.5rem' },
+            letterSpacing: 1.5,
+            background: 'linear-gradient(90deg, #7bb6ff 0%, #e0e7ff 100%)',
+            backgroundClip: 'text',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
           }}
         >
           Why Choose EventManager?
         </Typography>
-        <Grid container spacing={4} justifyContent="center">
+        <Grid container spacing={4} justifyContent="center" alignItems="stretch" wrap="nowrap" sx={{
+          flexDirection: { xs: 'column', md: 'row' },
+        }}>
           {features.map((feature, index) => (
-            <Grid item xs={12} md={4} key={index}>
+            <Grid item xs={12} md={4} key={index} sx={{ display: 'flex' }}>
               <Card 
                 sx={{ 
                   p: 4, 
                   textAlign: 'center', 
-                  background: 'rgba(36,41,54,0.6)',
-                  backdropFilter: 'blur(10px)',
-                  border: '1px solid rgba(123, 182, 255, 0.1)',
-                  borderRadius: 3,
-                  transition: 'all 0.3s ease',
+                  background: 'rgba(36,41,54,0.45)',
+                  backdropFilter: 'blur(16px)',
+                  border: '1.5px solid rgba(123, 182, 255, 0.18)',
+                  borderRadius: 4,
+                  boxShadow: '0 8px 32px 0 rgba(123,182,255,0.18)',
+                  position: 'relative',
+                  overflow: 'visible',
+                  transition: 'all 0.35s cubic-bezier(.23,1,.32,1)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  flex: 1,
+                  height: '100%',
                   '&:hover': {
-                    transform: 'translateY(-8px)',
-                    boxShadow: '0 20px 40px rgba(123, 182, 255, 0.15)',
-                    borderColor: 'rgba(123, 182, 255, 0.3)'
+                    transform: 'translateY(-12px) scale(1.04)',
+                    boxShadow: '0 20px 48px 0 rgba(123,182,255,0.25)',
+                    borderColor: 'rgba(123, 182, 255, 0.35)'
                   }
                 }}
               >
-                <Box sx={{ mb: 2 }}>
-                  {feature.icon}
+                {/* Gradient Accent Bar */}
+                <Box sx={{
+                  width: 48,
+                  height: 6,
+                  borderRadius: 3,
+                  mx: 'auto',
+                  mb: 2,
+                  background: 'linear-gradient(90deg, #7bb6ff 0%, #e0e7ff 100%)',
+                  boxShadow: '0 0 12px 2px #7bb6ff44',
+                }} />
+                {/* Animated Icon */}
+                <Box sx={{ mb: 2, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                  <span style={{
+                    display: 'inline-flex',
+                    animation: `${float} 2.5s ease-in-out infinite`,
+                    filter: 'drop-shadow(0 0 12px #7bb6ff88)'
+                  }}>{feature.icon}</span>
                 </Box>
-                <Typography variant="h5" sx={{ fontWeight: 700, color: '#fff', mb: 2 }}>
+                <Typography 
+                  variant="h5" 
+                  sx={{ 
+                    fontWeight: 800, 
+                    mb: 2, 
+                    background: 'linear-gradient(90deg, #7bb6ff 0%, #e0e7ff 100%)',
+                    backgroundClip: 'text',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    letterSpacing: 1.2,
+                    fontSize: '1.45rem',
+                  }}
+                >
                   {feature.title}
                 </Typography>
-                <Typography variant="body1" sx={{ color: '#b0b7c3', lineHeight: 1.6 }}>
+                <Typography variant="body1" sx={{ color: '#b0b7c3', lineHeight: 1.6, fontWeight: 500 }}>
                   {feature.description}
                 </Typography>
               </Card>
