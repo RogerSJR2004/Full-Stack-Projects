@@ -16,7 +16,7 @@ function Navbar() {
         </Typography>
         <Box>
           <Button component={RouterLink} to="/">Home</Button>
-          <Button component={RouterLink} to="/events">Events</Button>
+          <Button component={RouterLink} to="/featured">Featured</Button>
           <Button component={RouterLink} to="/about">About</Button>
           <Button component={RouterLink} to="/contact">Contact</Button>
           <Button component={RouterLink} to="/login">Login</Button>

@@ -26,6 +26,7 @@ import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import GroupIcon from '@mui/icons-material/Group';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import '../../components/auth-dark.css';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const FILTERS = [
   { label: 'My Events', value: 'my', icon: <EventAvailableIcon sx={{ mr: 1 }} /> },
@@ -33,7 +34,11 @@ const FILTERS = [
   { label: 'Past Events', value: 'past', icon: <CheckCircleIcon sx={{ mr: 1 }} /> },
 ];
 
-// Mock data for dashboard stats
+// Stats section is based on the user id and the events that are registered by the user -> update this section
+
+// My events la based on user id it show and for available section it show only current date and future date events, past events is all the events that are completed
+
+// Dummy data for dashboard stats
 const dashboardStats = [
   {
     title: 'Requested Events',
@@ -93,6 +98,45 @@ function Header({ onLogout }) {
     </AppBar>
   );
 }
+// Helper functions to segregate events into available (upcoming) and past
+function parseDate(dateStr) {
+  return new Date(dateStr);
+}
+
+// Fetch events from API and filter available (upcoming) events
+async function fetchAvailableEvents() {
+  try {
+    const response = await fetch('http://localhost:8080/ems/v1/event/list');
+    if (!response.ok) {
+      throw new Error('Failed to fetch events');
+    }
+    const data = await response.json();
+    // Filter for available events: status 1 or 'active', and event_date >= today
+    const now = new Date();
+    const availableEvents = (Array.isArray(data) ? data : data.events || []).filter(event => {
+      const eventDate = new Date(event.event_date);
+      return (
+        (event.status === 1 || event.status === 'active') &&
+        eventDate >= now
+      );
+    });
+    return availableEvents;
+  } catch (error) {
+    console.error('Error fetching available events:', error);
+    return [];
+  }
+}
+
+function isPastEvent(event) {
+  // status 0 or 'completed', or event_date < today
+  const now = new Date();
+  const eventDate = parseDate(event.event_date);
+  return (
+    eventDate < now ||
+    event.status === 0 ||
+    event.status === 'completed'
+  );
+}
 
 export default function UserDashboard() {
   const [selectedEvent, setSelectedEvent] = useState(null);
@@ -100,7 +144,10 @@ export default function UserDashboard() {
   const [filter, setFilter] = useState('my');
   const [events, setEvents] = useState([]);
   const [stats, setStats] = useState(dashboardStats.map(() => 0));
-  const userName = 'Roger'; // Replace with actual user name from context/auth
+  const [myEvents, setMyEvents] = useState([]);
+  const [loadingMyEvents, setLoadingMyEvents] = useState(false);
+  const userEmail = 'jeevin@gmail.com'; // TODO: Replace with actual logged-in user's email
+  const userName = 'Roger'; // Need to replace with actual user name from auth
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -134,6 +181,27 @@ export default function UserDashboard() {
     return () => intervals.forEach(clearInterval);
   }, []);
 
+  useEffect(() => {
+    const fetchMyEvents = async () => {
+      setLoadingMyEvents(true);
+      const myEnrolledEvents = [];
+      for (const event of events) {
+        try {
+          const enrollRes = await fetch(`http://localhost:8080/ems/v1/event/${event.id}/list`);
+          const enrollData = await enrollRes.json();
+          if (Array.isArray(enrollData.data) && enrollData.data.some(enroll => enroll.email_address === userEmail)) {
+            myEnrolledEvents.push(event);
+          }
+        } catch (e) {
+          // Ignore errors for individual events
+        }
+      }
+      setMyEvents(myEnrolledEvents);
+      setLoadingMyEvents(false);
+    };
+    fetchMyEvents();
+  }, [events, userEmail]);
+
   const handleEventClick = event => {
     setSelectedEvent(event);
     setShowRegister(false);
@@ -150,11 +218,19 @@ export default function UserDashboard() {
 
   let filteredEvents = events;
   if (filter === 'my') {
-    filteredEvents = events.filter(e => e.owner === 'me');
+    filteredEvents = myEvents;
   } else if (filter === 'available') {
-    filteredEvents = events.filter(e => e.status === 'available');
+    const now = new Date();
+    filteredEvents = events.filter(e => {
+      const eventDate = new Date(e.event_date);
+      return (eventDate >= now && (e.status === 1 || e.status === 'active'));
+    });
   } else if (filter === 'past') {
-    filteredEvents = events.filter(e => e.status === 'past');
+    const now = new Date();
+    filteredEvents = events.filter(e => {
+      const eventDate = new Date(e.event_date);
+      return (eventDate < now || e.status === 0 || e.status === 'completed');
+    });
   }
 
   return (
@@ -284,7 +360,13 @@ export default function UserDashboard() {
       {/* Events Section */}
       <Box sx={{ py: { xs: 4, md: 6 }, px: { xs: 2, md: 4 }, maxWidth: 1200, mx: 'auto', mb: 6 }}>
         <Box sx={{ background: 'rgba(36,41,54,0.6)', borderRadius: 4, p: 4, backdropFilter: 'blur(10px)', border: '1px solid rgba(123, 182, 255, 0.1)' }}>
-          <EventList events={filteredEvents} onEventClick={handleEventClick} />
+          {filter === 'my' && loadingMyEvents ? (
+            <Box sx={{ display: 'flex', justifyContent: 'center', py: 6 }}>
+              <CircularProgress color="primary" />
+            </Box>
+          ) : (
+            <EventList events={filteredEvents} onEventClick={handleEventClick} />
+          )}
         </Box>
       </Box>
 

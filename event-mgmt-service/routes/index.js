@@ -20,7 +20,7 @@ router.post("/event/:eventId/enroll", Enroll.add);
 router.get("/event/:eventId/list", Enroll.list);
 router.get("/event/:eventId/enroll/:enrollId", Enroll.getEnroll);
 router.put("/event/:eventId/enroll/:enrollId", Enroll.updateEnroll);
-// Repot API
+// Report API
 router.get("/report/enroll/all", require("../controllers/report.controllers").getAllEnrolls);
 // User API
 router.get("/user/list", Users.list);

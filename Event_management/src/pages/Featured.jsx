@@ -115,7 +115,7 @@ const filterOptions = [
   { label: 'Highlights', value: 'highlight', icon: <HighlightIcon sx={{ mr: 1 }} /> },
 ];
 
-export default function Events() {
+export default function Featured() {
   const [filter, setFilter] = useState('past');
   const [galleryOpen, setGalleryOpen] = useState(false);
   const [galleryImages, setGalleryImages] = useState([]);

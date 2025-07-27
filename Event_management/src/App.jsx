@@ -4,11 +4,11 @@ import Landing from './pages/Landing.jsx';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Signup from './pages/Signup.jsx';
-import Events from './pages/Events.jsx';
+import Featured from './pages/Featured.jsx';
 import About from './pages/About.jsx';
 import Contact from './pages/Contact.jsx';
 import AddEvent from './pages/Dashboard/AddEvent.jsx';
-
+import Events from './pages/Dashboard/Events.jsx';
 import './App.css';
 import Dashboard from './pages/Dashboard/UserDashboard.jsx';
 import AdminDashboard from './pages/Dashboard/AdminDashboard.jsx';
@@ -24,12 +24,13 @@ function App() {
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/events" element={<Events />} />
+        <Route path="/featured" element={<Featured />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/dashboard" element={<Dashboard />} /> 
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/addevent" element={<AddEvent/>} />
+        <Route path="/events" element={<Events />} />
         <Route
           path="*"
           element={

@@ -14,10 +14,6 @@ import * as Yup from 'yup';
 import { keyframes } from '@mui/system';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import '../../components/auth-dark.css';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
 import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 import Dialog from '@mui/material/Dialog';
@@ -488,7 +484,7 @@ export default function AddEvent() {
           </Paper>
         </Box>
       )}
-      {/* Edit Event Dialog */}
+      {/* Edit Event*/}
       <Dialog open={editOpen} onClose={handleEditClose} maxWidth="sm" fullWidth>
         <DialogTitle>Edit Event</DialogTitle>
         <DialogContent>
