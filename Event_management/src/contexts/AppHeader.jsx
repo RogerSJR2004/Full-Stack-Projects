@@ -1,0 +1,49 @@
+// import { AppBar, Toolbar, Typography, Button } from '@mui/material';
+// import { Link, useNavigate } from 'react-router-dom';
+// import { useAuth } from './AuthContext';
+
+
+// function AppHeader() {
+//   const { isAuthenticated, logout, user } = useAuth();
+//   const navigate = useNavigate();
+
+
+//   const handleLogout = () => {
+//     logout();
+//     navigate('/');
+//   };
+
+
+//   return (
+//     <AppBar >
+//       <Toolbar>
+//         <Typography variant="h6" sx={{ flexGrow: 1 }}>
+//           My App
+//         </Typography>
+
+
+       
+//         {!isAuthenticated &&
+//         <>
+//         <Button color="inherit" component={Link} to="/">Home</Button>
+//         <Button color="inherit" component={Link} to="/login">Login</Button>
+//         <Button color="inherit" component={Link} to="/register">Register</Button>
+//         </>
+       
+//         }
+
+
+//         {isAuthenticated && (
+//           <>
+//             <Button color="inherit" component={Link} to="/dashboard">Dashboard</Button>
+//             <Button color="inherit" onClick={handleLogout}>Logout</Button>
+//            <Typography sx={{ ml: 2 }}>{user?.data.emailAddress}</Typography>
+//           </>
+//         )}
+//       </Toolbar>
+//     </AppBar>
+//   );
+// }
+
+
+// export default AppHeader;

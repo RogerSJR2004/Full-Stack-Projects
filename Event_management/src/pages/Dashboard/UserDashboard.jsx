@@ -14,7 +14,6 @@ import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 import Grid from '@mui/material/Grid';
 import { Link as RouterLink } from 'react-router-dom';
 import Footer from '../../components/Footer';
@@ -22,9 +21,6 @@ import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import PeopleIcon from '@mui/icons-material/People';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
-import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
-import GroupIcon from '@mui/icons-material/Group';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
 import '../../components/auth-dark.css';
 import CircularProgress from '@mui/material/CircularProgress';
 
@@ -42,21 +38,21 @@ const FILTERS = [
 const dashboardStats = [
   {
     title: 'Requested Events',
-    value: 8,
+    value: 1,
     icon: <EventAvailableIcon sx={{ fontSize: 40, color: '#7bb6ff' }} />,
     color: '#7bb6ff',
     bgGradient: 'linear-gradient(135deg, rgba(123, 182, 255, 0.1) 0%, rgba(123, 182, 255, 0.05) 100%)'
   },
   {
     title: 'Events Attended',
-    value: 24,
+    value: 1,
     icon: <PeopleIcon sx={{ fontSize: 40, color: '#4caf50' }} />,
     color: '#4caf50',
     bgGradient: 'linear-gradient(135deg, rgba(76, 175, 80, 0.1) 0%, rgba(76, 175, 80, 0.05) 100%)'
   },
   {
     title: 'Available Events',
-    value: 156,
+    value: 10,
     icon: <CalendarTodayIcon sx={{ fontSize: 40, color: '#ff9800' }} />,
     color: '#ff9800',
     bgGradient: 'linear-gradient(135deg, rgba(255, 152, 0, 0.1) 0%, rgba(255, 152, 0, 0.05) 100%)'

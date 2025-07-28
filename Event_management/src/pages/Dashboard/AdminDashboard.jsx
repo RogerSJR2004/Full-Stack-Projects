@@ -3,6 +3,8 @@ import EventList from '../../components/EventList';
 import UserTable from '../../components/UserTable';
 import '../../components/Dashboard.css';
 
+// users details(update user model add like the update event model) and events details(add call pananum) 
+
 // Mock data for demonstration
 const mockEvents = [
   { id: 1, title: 'React Summit', date: '2024-07-10', time: '10:00', location: 'Hall A', description: 'A big React event.', speakers: ['Alice', 'Bob'], status: 'upcoming' },

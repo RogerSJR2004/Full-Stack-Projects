@@ -124,3 +124,4 @@ exports.updateEvent = async (req, res) =>{
         return res.status(504).send("Error in updating event")
     }
 }
+

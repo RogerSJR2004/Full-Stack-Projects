@@ -1,38 +1,91 @@
 const bcrypt = require('bcryptjs'); 
 const { QueryTypes } = require('sequelize'); 
 const eventDB = require('../config/db');
+require('dotenv').config()
+const jwt = require('jsonwebtoken');
+const secret = process.env.SECRET;
 // const users = [];  -> array use panrom
 
-exports.login = async(req,res) => { 
-    console.log("[LOGIN] req.body:", req.body); 
-     const { emailAddress, password } = req.body; 
-    const user = await eventDB.query(`select email_address, password from     
-users where email_address = :email`, 
-{replacements: { email: emailAddress }, 
-type: QueryTypes.SELECT}); 
-console.log("[LOGIN] user from DB:", user);                                               
-    if (user.length === 0) { 
-        console.log("[LOGIN] Email not found:", emailAddress);
-        return res.status(400).send('Email is not found'); 
-    } 
- 
-    try { 
-        console.log("[LOGIN] Comparing password:", password, "with hash:", user[0].password);
-        const passwordMatch = await bcrypt.compare(password, user[0].password);
-        console.log("[LOGIN] Password match:", passwordMatch);
-        if (passwordMatch) { 
-        // if (password === user[0].password) {  //index [0] endru meaning -> array la irukum data eduka "[index number]"" like wise we use dot" . "for get info of object            res.send('Login successful'); 
-        return res.status(200).send('Login successful');  // mistake made i didn't tell Backend what to do after sucess this cause me to stuck in login page
-    } 
 
-        else { 
-            res.status(400).send('Invalid username or password'); 
-        } 
-    } catch (err) { 
-        console.error('[LOGIN] Login error:', err);
-        res.status(500).send('Error logging in'); 
-    } 
-} 
+exports.login = async (req, res) => {
+    console.log("req.body", req.body)
+    const { emailAddress, password } = req.body;
+
+    try {
+        const user = await eventDB.query(
+            `select email_address, password, id, role from users where email_address = :email`,
+            {
+                replacements: { email: emailAddress },
+                type: QueryTypes.SELECT
+            }
+        );
+
+        console.log("USER", user);
+        console.log("secret", secret);
+
+        if (user.length === 0) {
+            return res.status(400).send('Email is not found');
+        }
+
+        console.log("password", password);
+        console.log("user.password", user[0].password);
+        // Compare the password with the stored hashed password
+        const verifyPassword = await bcrypt.compare(password, user[0].password);
+        if (verifyPassword) {
+            const token = jwt.sign(
+                {
+                    exp: Math.floor(Date.now() / 1000) + (60 * 60),
+                    data: {
+                        'email': user[0].email_address,
+                        'role': user[0].role,
+                        'userId': user[0].id
+                    }
+                },
+                secret
+            );
+            return res.status(200).json({jwt:token, user:user[0].id, emailAddress:user[0].email_address, role:user[0].role})
+            // return res.status(200).json({ jwt: token, user: user[0].id });  -> only show the jwt and userid
+        } else {
+            return res.status(400).send('Invalid email or password');
+        }
+    } catch (err) {
+        console.log("error in logging in", err);
+        return res.status(500).send('Error logging in');
+    }
+}
+
+// With out JWT
+
+// exports.login = async(req,res) => { 
+//     console.log("[LOGIN] req.body:", req.body); 
+//      const { emailAddress, password } = req.body; 
+//     const user = await eventDB.query(`select email_address, password from     
+// users where email_address = :email`, 
+// {replacements: { email: emailAddress }, 
+// type: QueryTypes.SELECT}); 
+// console.log("[LOGIN] user from DB:", user);                                               
+//     if (user.length === 0) { 
+//         console.log("[LOGIN] Email not found:", emailAddress);
+//         return res.status(400).send('Email is not found'); 
+//     } 
+ 
+//     try { 
+//         console.log("[LOGIN] Comparing password:", password, "with hash:", user[0].password);
+//         const passwordMatch = await bcrypt.compare(password, user[0].password);
+//         console.log("[LOGIN] Password match:", passwordMatch);
+//         if (passwordMatch) { 
+//         // if (password === user[0].password) {  //index [0] endru meaning -> array la irukum data eduka "[index number]"" like wise we use dot" . "for get info of object            res.send('Login successful'); 
+//         return res.status(200).send('Login successful');  // mistake made i didn't tell Backend what to do after sucess this cause me to stuck in login page
+//     } 
+
+//         else { 
+//             res.status(400).send('Invalid username or password'); 
+//         } 
+//     } catch (err) { 
+//         console.error('[LOGIN] Login error:', err);
+//         res.status(500).send('Error logging in'); 
+//     } 
+// } 
 
 exports.register = async(req,res) => { 
     console.log("register request body", req.body); 
@@ -156,4 +209,37 @@ res.status(500).send('Error while updating user');
 
 
 
+exports.updatePassword = async(req,res) => {
+    console.log("req.body", req.body)
+    const { emailAddress, password } = req.body;
 
+
+        const user = await eventDB.query(`select email_address, password, id from users where email_address = :email`,
+            {replacements: { email: emailAddress },
+                type: QueryTypes.SELECT});
+
+
+    console.log("USER", user);
+
+
+    if (user.length === 0) {
+        return res.status(400).send('Email is not found');
+    }
+
+
+    try {
+        const hashedPassword = await bcrypt.hash(req.body.password,10);
+        const userId = user[0].id
+        const query = `UPDATE users SET password=:hashedPassword where id=:userId`;
+        const updatePassword = await eventDB.query(query,{
+            replacements:{ hashedPassword,userId},
+            types:QueryTypes.UPDATE,
+        });
+       
+          return  res.status(200).send('password updated successfully');
+       
+    } catch (err) {
+        console.log("err in updating password",err);
+      return  res.status(500).send('Error updating password',err);
+    }
+}

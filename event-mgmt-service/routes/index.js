@@ -9,7 +9,8 @@ const Users = require("../controllers/users.controllers");
  
 router.post('/register',Auth.register); 
 router.post('/login',Auth.login); 
-router.put("/update/:primaryid", Auth.updateUser); 
+router.put("/update/:primaryid", Auth.updateUser); // intha rendum complete pannum -> this is for updating the user info by admin or from user profile
+router.put("/updatepassword", Auth.updatePassword); 
 
 router.post("/event/add", Event.add)
 router.get("/event/list", Event.list)
@@ -27,3 +28,4 @@ router.get("/user/list", Users.list);
 router.get("/user/:id", Users.getUser);
 router.put("/user/:id", Users.updateUser);
 module.exports = router; 
+
