@@ -1,38 +1,283 @@
+/* Admin Dashboard Styles */
 .dashboard-container {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 32px 16px;
+  padding: 2rem;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  color: #e3e9f7;
 }
-.event-details-modal {
-  position: fixed;
-  top: 10vh;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #fff;
+
+.dashboard-container h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #7bb6ff;
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+/* Tab Navigation */
+.tab-navigation {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.tab-btn {
+  padding: 0.75rem 1.5rem;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  color: #e3e9f7;
   border-radius: 8px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.2);
-  padding: 32px;
-  z-index: 1000;
-  min-width: 350px;
-}
-.close-btn {
-  position: absolute;
-  top: 12px;
-  right: 16px;
-  background: #eee;
-  border: none;
-  border-radius: 50%;
-  width: 32px;
-  height: 32px;
-  font-size: 18px;
   cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  min-width: 120px;
 }
+
+.tab-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.tab-btn.active {
+  background: #7bb6ff;
+  color: #1e3c72;
+  border-color: #7bb6ff;
+  box-shadow: 0 4px 12px rgba(123, 182, 255, 0.3);
+}
+
+/* Tab Content */
+.tab-content {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.section-header h3 {
+  color: #7bb6ff;
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
 .add-event-btn {
-  margin: 16px 0;
-  padding: 8px 16px;
-  background: #1976d2;
-  color: #fff;
+  padding: 0.75rem 1.5rem;
+  background: #7bb6ff;
+  color: #1e3c72;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(123, 182, 255, 0.3);
+}
+
+.add-event-btn:hover {
+  background: #5a9bff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(123, 182, 255, 0.4);
+}
+
+/* Event Details Modal */
+.event-details-modal {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 2rem;
+  margin-top: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.event-details-modal h3 {
+  color: #7bb6ff;
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.event-actions {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.event-actions button {
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  color: #e3e9f7;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.event-actions button:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Loading and Error States */
+.loading {
+  text-align: center;
+  padding: 3rem;
+  font-size: 1.2rem;
+  color: #b0b7c3;
+}
+
+.error {
+  text-align: center;
+  padding: 2rem;
+  background: rgba(244, 67, 54, 0.1);
+  border: 1px solid rgba(244, 67, 54, 0.3);
+  border-radius: 8px;
+  color: #ffcdd2;
+  margin: 2rem 0;
+}
+
+.error button {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background: #f44336;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.error button:hover {
+  background: #d32f2f;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 1rem;
+  }
+  
+  .tab-navigation {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .tab-btn {
+    width: 100%;
+    max-width: 200px;
+  }
+  
+  .section-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .event-actions {
+    flex-direction: column;
+  }
+  
+  .event-actions button {
+    width: 100%;
+  }
+}
+
+/* Table Styles */
+.MuiTable-root {
+  background: rgba(255, 255, 255, 0.02) !important;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.MuiTableHead-root .MuiTableCell-root {
+  background: rgba(123, 182, 255, 0.1) !important;
+  color: #7bb6ff !important;
+  font-weight: 600 !important;
+  border-bottom: 2px solid rgba(123, 182, 255, 0.2) !important;
+}
+
+.MuiTableBody-root .MuiTableCell-root {
+  color: #e3e9f7 !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.MuiTableRow-root:hover {
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Dialog Styles */
+.MuiDialog-paper {
+  background: rgba(36, 41, 54, 0.95) !important;
+  color: #e3e9f7 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(10px);
+}
+
+.MuiDialogTitle-root {
+  color: #7bb6ff !important;
+  font-weight: 600 !important;
+}
+
+/* Form Styles */
+.MuiTextField-root .MuiOutlinedInput-root {
+  color: #e3e9f7 !important;
+}
+
+.MuiTextField-root .MuiOutlinedInput-notchedOutline {
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+.MuiTextField-root .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+  border-color: rgba(123, 182, 255, 0.5) !important;
+}
+
+.MuiTextField-root .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: #7bb6ff !important;
+}
+
+.MuiTextField-root .MuiInputLabel-root {
+  color: #b0b7c3 !important;
+}
+
+.MuiTextField-root .MuiInputLabel-root.Mui-focused {
+  color: #7bb6ff !important;
+}
+
+/* Button Styles */
+.MuiButton-root {
+  text-transform: none !important;
+  font-weight: 600 !important;
+  border-radius: 8px !important;
+}
+
+.MuiButton-contained {
+  background: #7bb6ff !important;
+  color: #1e3c72 !important;
+  box-shadow: 0 2px 8px rgba(123, 182, 255, 0.3) !important;
+}
+
+.MuiButton-contained:hover {
+  background: #5a9bff !important;
+  box-shadow: 0 4px 12px rgba(123, 182, 255, 0.4) !important;
+}
+
+.MuiButton-outlined {
+  border-color: rgba(255, 255, 255, 0.3) !important;
+  color: #e3e9f7 !important;
+}
+
+.MuiButton-outlined:hover {
+  border-color: rgba(255, 255, 255, 0.5) !important;
+  background: rgba(255, 255, 255, 0.05) !important;
 }

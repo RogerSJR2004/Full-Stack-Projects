@@ -16,6 +16,7 @@ router.post("/event/add", Event.add)
 router.get("/event/list", Event.list)
 router.get("/event/:id", Event.getEvent)
 router.put("/event/:id", Event.updateEvent)
+
 // Enroll controller API
 router.post("/event/:eventId/enroll", Enroll.add);
 router.get("/event/:eventId/list", Enroll.list);

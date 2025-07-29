@@ -22,7 +22,9 @@ export default function EventCard({ event, onClick }) {
     setOpen(true);
   };
   const handleClose = () => setOpen(false);
+  
   const imageUrl = event.event_image_link || event.image || event.imageUrl || '/static/images/cards/contemplative-reptile.jpg';
+  
   const [form, setForm] = React.useState({
     full_name: '',
     email_address: '',
@@ -32,8 +34,13 @@ export default function EventCard({ event, onClick }) {
     district: '',
     meta_1: '',
     meta_2: '',
-    meta_3: ''
+    meta_3: '',
+    created_by: '',
+    created_at: '',
+    updated_by: '',
+    updated_at: ''
   });
+  
   const [submitting, setSubmitting] = React.useState(false);
   const [snackbar, setSnackbar] = React.useState({ open: false, message: '', severity: 'success' });
 
@@ -44,17 +51,30 @@ export default function EventCard({ event, onClick }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
+    
+    // Set enrollment tracking data
+    const currentTime = new Date().toISOString();
+    const enrollmentData = {
+      ...form,
+      status: 1,
+      created_by: form.email_address, // Using email as created_by
+      created_at: currentTime,
+      updated_by: form.email_address, // Using email as updated_by
+      updated_at: currentTime
+    };
+    
     try {
       const res = await fetch(`http://localhost:8080/ems/v1/event/${event.id}/enroll`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, status: 1 })
+        body: JSON.stringify(enrollmentData)
       });
       if (!res.ok) throw new Error('Failed to enroll');
       setSnackbar({ open: true, message: 'Enrollment successful!', severity: 'success' });
       setOpen(false);
       setForm({
-        full_name: '', email_address: '', mobile: '', country: '', state: '', district: '', meta_1: '', meta_2: '', meta_3: ''
+        full_name: '', email_address: '', mobile: '', country: '', state: '', district: '', 
+        meta_1: '', meta_2: '', meta_3: '', created_by: '', created_at: '', updated_by: '', updated_at: ''
       });
     } catch (err) {
       setSnackbar({ open: true, message: err.message || 'Error occurred', severity: 'error' });
@@ -62,11 +82,36 @@ export default function EventCard({ event, onClick }) {
       setSubmitting(false);
     }
   };
+
+  const formatDate = (dateString) => {
+    if (!dateString) return 'TBD';
+    try {
+      return new Date(dateString).toLocaleDateString();
+    } catch {
+      return dateString;
+    }
+  };
+
   return (
-    <Card className="event-card" sx={{ maxWidth: 345, mb: 3, borderRadius: 3, boxShadow: 6, background: 'rgba(36,41,54,0.92) !important', color: '#e3e9f7', border: '1.5px solid rgba(255,255,255,0.06)', transition: 'transform 0.18s', '&:hover': { transform: 'scale(1.03)', boxShadow: 8 } }}>
+    <Card 
+      className="event-card" 
+      sx={{ 
+        maxWidth: 345, 
+        mb: 3, 
+        borderRadius: 3, 
+        boxShadow: 6, 
+        background: 'rgba(36,41,54,0.92) !important', 
+        color: '#e3e9f7', 
+        border: '1.5px solid rgba(255,255,255,0.06)', 
+        transition: 'transform 0.18s', 
+        cursor: 'pointer',
+        '&:hover': { transform: 'scale(1.03)', boxShadow: 8 } 
+      }}
+      onClick={onClick}
+    >
       <CardMedia
         component="img"
-        alt={event.name || event.title || 'Event image'}
+        alt={event.event_name || event.name || event.title || 'Event image'}
         height="160"
         image={imageUrl}
         sx={{ objectFit: 'cover' }}
@@ -75,16 +120,34 @@ export default function EventCard({ event, onClick }) {
         <Typography gutterBottom variant="h5" component="div" sx={{ color: '#7bb6ff', fontWeight: 700 }}>
           {event.event_name || event.name || event.title}
         </Typography>
+        
         <Typography variant="body2" sx={{ color: '#b0b7c3', mb: 1 }}>
-          {event.event_date || event.date || event.time || ''}
+          📅 {formatDate(event.event_date || event.date)}
         </Typography>
-        <Typography variant="body2" sx={{ color: '#e3e9f7' }}>
-          {event.event_description?.slice(0, 100) || event.description?.slice(0, 100) || 'No description.'}{(event.event_description?.length > 100 || event.description?.length > 100) ? '...' : ''}
+        
+        {event.event_location && (
+          <Typography variant="body2" sx={{ color: '#b0b7c3', mb: 1 }}>
+            📍 {event.event_location}
+          </Typography>
+        )}
+        
+        <Typography variant="body2" sx={{ color: '#e3e9f7', mb: 2 }}>
+          {event.event_description?.slice(0, 100) || event.description?.slice(0, 100) || 'No description.'}
+          {(event.event_description?.length > 100 || event.description?.length > 100) ? '...' : ''}
         </Typography>
       </CardContent>
+      
       <CardActions>
-        <Button size="small" className="app-btn-outline" sx={{ fontWeight: 700, borderRadius: 2, px: 2, py: 0.7 }} onClick={handleOpen}>Apply</Button>
+        <Button 
+          size="small" 
+          className="app-btn-outline" 
+          sx={{ fontWeight: 700, borderRadius: 2, px: 2, py: 0.7 }} 
+          onClick={handleOpen}
+        >
+          Apply
+        </Button>
       </CardActions>
+      
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Event Enrollment</DialogTitle>
         <DialogContent>
@@ -141,7 +204,9 @@ export default function EventCard({ event, onClick }) {
             </TextField>
             <DialogActions>
               <Button onClick={handleClose} disabled={submitting}>Cancel</Button>
-              <Button type="submit" variant="contained" className="app-btn" disabled={submitting}>{submitting ? 'Submitting...' : 'Submit'}</Button>
+              <Button type="submit" variant="contained" className="app-btn" disabled={submitting}>
+                {submitting ? 'Submitting...' : 'Submit'}
+              </Button>
             </DialogActions>
           </form>
         </DialogContent>
