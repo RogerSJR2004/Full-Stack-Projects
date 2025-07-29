@@ -42,9 +42,25 @@ exports.add = async(req, res) =>{
 }
 exports.list = async (req, res) =>{
     try{
+        // const now = new Date();
+        // const availableEvents = (Array.isArray(data) ? data : data.events || []).filter(event => {
+        //     const eventDate = new Date(event.event_date);
+        //     return (
+        //         (event.status === 1 || event.status === 'active') &&
+        //         eventDate >= now
+        //     );
+        // });
         const result = await eventsTbl.findAll({
             attributes: ['id','event_name','event_description','event_date','event_location','event_link','event_video_link','event_image_link','publish_from','publish_to','status'],
-
+            // where: {
+            //     status: 1,
+            //     publish_from: {
+            //         [Op.lte]: now
+            //     },
+            //     publish_to: {
+            //         [Op.gte]: now
+            //     }
+            // }
         });
 
         // list all events

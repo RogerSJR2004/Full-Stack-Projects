@@ -59,41 +59,6 @@ const dashboardStats = [
   }
 ];
 
-function Header({ onLogout }) {
-  const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
-
-  const handleMenu = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  return (
-    <AppBar position="static" className="app-navbar" sx={{ backdropFilter: 'blur(12px)', borderRadius: '0 0 1.5rem 1.5rem', boxShadow: '0 4px 24px rgba(44,62,80,0.18)' }}>
-      <Toolbar sx={{ minHeight: 72, px: { xs: 1, md: 4 } }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
-          <EventAvailableIcon sx={{ color: '#7bb6ff', fontSize: 32, mr: 1 }} />
-          <Typography variant="h6" component={RouterLink} to="/" sx={{ textDecoration: 'none', color: '#fff', fontWeight: 900, letterSpacing: 1.5, mr: 3 }}>
-            EventManager
-          </Typography>
-        </Box>
-        <Button component={RouterLink} to="/events" className="app-btn" sx={{ background: 'none !important', color: '#e3e9f7 !important', fontWeight: 700, px: 2, py: 1, fontSize: '1.08rem', '&:hover': { color: '#7bb6ff !important', background: '#232a36 !important' } }}>Events</Button>
-        <Button component={RouterLink} to="/help" className="app-btn" sx={{ background: 'none !important', color: '#e3e9f7 !important', fontWeight: 700, px: 2, py: 1, fontSize: '1.08rem', '&:hover': { color: '#7bb6ff !important', background: '#232a36 !important' } }}>Help</Button>
-        <Button component={RouterLink} to="/addevent" className="app-btn" sx={{ background: 'none !important', color: '#7bb6ff !important', fontWeight: 700, px: 2, py: 1, fontSize: '1.08rem', '&:hover': { color: '#fff !important', background: '#232a36 !important' } }}>Add</Button>
-        <Box sx={{ flexGrow: 1 }} />
-        <IconButton onClick={handleMenu} color="inherit" size="large">
-          <Avatar />
-        </IconButton>
-        <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-          <MenuItem onClick={handleClose} component={RouterLink} to="/profile">Profile</MenuItem>
-          <MenuItem onClick={() => { handleClose(); onLogout && onLogout(); }} component={RouterLink} to="/logout">Logout</MenuItem>
-        </Menu>
-      </Toolbar>
-    </AppBar>
-  );
-}
 // Helper functions to segregate events into available (upcoming) and past
 function parseDate(dateStr) {
   return new Date(dateStr);
@@ -231,8 +196,6 @@ export default function UserDashboard() {
 
   return (
     <Box className="app-bg-root" sx={{ minHeight: '100vh' }}>
-      <Header />
-      
       {/* Hero Section */}
       <Box sx={{
         position: 'relative',

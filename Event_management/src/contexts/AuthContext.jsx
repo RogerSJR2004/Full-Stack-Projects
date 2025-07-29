@@ -2,9 +2,9 @@ import { createContext, useContext, useEffect, useState, useRef } from 'react';
 import { jwtDecode } from 'jwt-decode';
 const AuthContext = createContext();
 
-
+// each page call this function to check if the user is authenticated
 export function AuthProvider({ children }) {
-  const [authToken, setAuthToken] = useState(null);
+  const [authToken, setAuthToken] = useState(null); // inital ah null if token value is there then it update the value
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showSessionWarning, setShowSessionWarning] = useState(false);
@@ -18,7 +18,7 @@ useEffect(() => {
     const storedToken = localStorage.getItem('authToken');
     if (storedToken) {
       try {
-        const decoded = jwtDecode(storedToken);
+        const decoded = jwtDecode(storedToken); // expiration time vachi work aagum -> 1000 na 1 mile second
      if (decoded.exp * 1000 > Date.now()) {
           setAuthToken(storedToken);
           setUser(decoded);
@@ -55,7 +55,7 @@ useEffect(() => {
   };
     const scheduleAutoLogout = (exp) => {
     const expiryMs = exp * 1000 - Date.now();
-    const warningBeforeMs = 60 * 1000; // 1 minute before expiry
+    const warningBeforeMs = 60 * 1000; // 1 minute before expiry -> 1hours mean
 
 
     if (expiryMs <= 0) {
@@ -73,7 +73,7 @@ useEffect(() => {
   };
 
 
-   const isAuthenticated = !!authToken;
+   const isAuthenticated = !!authToken; // ! = null ? true : false  -> ithum use panalam
 
 
   return (

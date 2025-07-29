@@ -6,6 +6,7 @@ import axios from 'axios';
 import { Box, Button, TextField, Typography, InputAdornment, IconButton, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import '../components/auth-dark.css';
+import { useAuth } from '../contexts/AuthContext';
 
 
 const validationSchema = Yup.object({
@@ -27,36 +28,38 @@ export default function Login() {
   const [forgotError, setForgotError] = React.useState('');
   const [forgotSuccess, setForgotSuccess] = React.useState('');
   const [showForgotPassword, setShowForgotPassword] = React.useState(false);
+  const { login } = useAuth();
   const handleLogin = async (values, { setSubmitting }) => {
     try {
       const response = await axios.post('http://localhost:8080/ems/v1/login', values);
       alert('Login Successful');
       // Store JWT and user info in localStorage
-      if (response.data && response.data.jwt) {
-        localStorage.setItem('Token', response.data.jwt);
-        localStorage.setItem('userId', response.data.user);
-        localStorage.setItem('emailAddress', response.data.emailAddress);
-        localStorage.setItem('role', response.data.role);
-      }
+      // // if (response.data && response.data.jwt) {
+      //   localStorage.setItem('Token', response.data.jwt);
+      //   localStorage.setItem('userId', response.data.user);
+      //   localStorage.setItem('emailAddress', response.data.emailAddress);
+      //   localStorage.setItem('role', response.data.role);
+      // // }
+    //   navigate('/dashboard');
+    // } catch (error) {
+    //   alert('Login Failed: ' + (error.response?.data || error.message));
+    // } finally {
+    //   setSubmitting(false);
+    // }
+    if (response.status === 200) {
+      const{jwt} = response.data;
+      login(jwt);
       navigate('/dashboard');
-    } catch (error) {
-      alert('Login Failed: ' + (error.response?.data || error.message));
-    } finally {
-      setSubmitting(false);
-    }
+  } else {
+    alert('Invalid Credentials');
+  }
+  } catch (error) {
+  alert('Login Failed');
+  }
+  
   };
 
-//   if (response.status === 200) {
-//     const{jwt} = XPathResult.data;
-//     localStorage.setItem('jwt', jwt);
-//           navigate('/dashboard');
-// } else {
-//   alert('Invalid Credentials');
-// }
-// } catch (error) {
-// alert('Login Failed');
-// }
-// }
+
 
   return (
     <Box className="auth-bg-root">
