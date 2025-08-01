@@ -2,7 +2,7 @@ import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 
 function RoleRoute({ requiredRole = 'admin' }) {
-  const { user, loading, isAuthenticated } = useAuth();
+  const { user, loading, isAuthenticated } = useAuth(); // auth true na 
 
   if (loading) {
     return (
@@ -13,7 +13,7 @@ function RoleRoute({ requiredRole = 'admin' }) {
     );
   }
 
-  if (!isAuthenticated) {
+  if (!isAuthenticated) { // auth false endru meaning inga
     return <Navigate to="/login" replace />;
   }
 

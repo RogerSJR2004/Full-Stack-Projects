@@ -396,15 +396,6 @@ export default function UserDashboard() {
           </Button>
         </Box>
       </Box>
-
-      {/* Event Details Modal */}
-      {selectedEvent && (
-        <div className="event-details-modal">
-          <button className="close-btn" onClick={closeDetails}>X</button>
-          <EventDetails event={selectedEvent} onRegister={handleRegister} showRegisterButton={!showRegister} />
-          {showRegister && <RegisterForm onSubmit={() => setShowRegister(false)} />}
-        </div>
-      )}
       
       <Footer />
     </Box>
