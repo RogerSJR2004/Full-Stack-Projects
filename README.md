@@ -21,9 +21,9 @@ This repository serves as:
 |---------------------|-------------|
 | `/basics/`          | HTML, CSS, JS learning projects (buttons, forms, logic-based UI) |
 | `/react-practice/`  | React components, useState examples, form handling, props usage |
-| `/node-express/`    | Backend APIs using Node.js and Express |
-| `/full-projects/`   | Combined frontend + backend apps (CRUD, Auth, etc.) |
-| `/internship-jesus-redeems/` | Real tasks & UIs built during my internship at **Jesus Redeems IT Wing** |
+| `/event-mgmt-service/`    | Backend APIs using Node.js and Express |
+| `/Event-management/`   | Combined frontend + backend apps (CRUD, Auth, etc.) |
+| `/AI Class/` | Real tasks & Python work during my internship at **Jesus Redeems IT Wing** |
 
 ---
 
