@@ -1,0 +1,3 @@
+Hello, Universe!
+Welcome to Python file handling!
+Happy Holidays!
