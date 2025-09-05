@@ -1,0 +1,154 @@
+import streamlit as st
+from utils import read_books, read_transactions, borrow_book, return_book, add_book, edit_book
+from rag import RAG
+import pandas as pd
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+rag = RAG()
+
+# Create tabs for navigation
+tabs = st.tabs(["Browse & Borrow", "Return Book", "Admin", "LLM Chat"])
+
+with tabs[0]:
+    st.title("Browse & Borrow Books")
+    books = read_books()
+    if not books.empty:
+        st.dataframe(books)
+    else:
+        st.warning("No book data available. Please check 'books.xlsx'.")
+    
+    st.subheader("Borrow a Book")
+    with st.form("borrow_form"):
+        name = st.text_input("Name")
+        college = st.text_input("College")
+        id_email = st.text_input("ID/Email")
+        phone = st.text_input("Phone")
+        book_id = st.number_input("Book ID", min_value=1)
+        submit = st.form_submit_button("Borrow")
+        
+        if submit:
+            user_details = {'name': name, 'college': college, 'id_email': id_email, 'phone': phone}
+            success, message = borrow_book(book_id, user_details)
+            if success:
+                st.success(message)
+                rag.refresh_index()  # Refresh RAG after borrow
+            else:
+                st.error(message)
+
+with tabs[1]:
+    st.title("Return Book")
+    
+    st.subheader("Return a Book")
+    with st.form("return_form"):
+        name = st.text_input("Name")
+        college = st.text_input("College")
+        id_email = st.text_input("ID/Email")
+        phone = st.text_input("Phone")
+        book_id = st.number_input("Book ID", min_value=1)
+        submit = st.form_submit_button("Return")
+        
+        if submit:
+            user_details = {'name': name, 'college': college, 'id_email': id_email, 'phone': phone}
+            success, message = return_book(book_id, user_details)
+            if success:
+                st.success(message)
+                rag.refresh_index()  # Refresh RAG after return
+            else:
+                st.error(message)
+
+with tabs[2]:
+    st.title("Admin Panel")
+    
+    st.subheader("View Books")
+    books = read_books()
+    if not books.empty:
+        st.dataframe(books)
+    else:
+        st.warning("No book data available. Please check 'books.xlsx'.")
+    
+    st.subheader("View Latest Transactions")
+    transactions = read_transactions()
+    if not transactions.empty:
+        st.dataframe(transactions.tail(200))
+    else:
+        st.warning("No transaction data available. Please check 'transactions.xlsx'.")
+    
+    st.subheader("Add New Book")
+    with st.form("add_book_form"):
+        title = st.text_input("Title")
+        author = st.text_input("Author")
+        copies = st.number_input("Copies", min_value=1)
+        description = st.text_area("Description")
+        tags = st.text_input("Tags (comma-separated)")
+        submit_add = st.form_submit_button("Add")
+        
+        if submit_add:
+            book_data = {'title': title, 'author': author, 'copies': copies, 'description': description, 'tags': tags}
+            book_id = add_book(book_data)
+            st.success(f"Book added with ID {book_id}")
+            rag.refresh_index()  # Refresh RAG after adding a book
+    
+    st.subheader("Edit Book")
+    with st.form("edit_book_form"):
+        book_id = st.number_input("Book ID", min_value=1)
+        title = st.text_input("New Title (optional)")
+        author = st.text_input("New Author (optional)")
+        copies = st.number_input("New Copies (optional)", min_value=0)
+        description = st.text_area("New Description (optional)")
+        tags = st.text_input("New Tags (optional)")
+        submit_edit = st.form_submit_button("Edit")
+        
+        if submit_edit:
+            book_data = {}
+            if title: book_data['title'] = title
+            if author: book_data['author'] = author
+            if copies >= 0: book_data['copies'] = copies
+            if description: book_data['description'] = description
+            if tags: book_data['tags'] = tags
+            success, message = edit_book(book_id, book_data)
+            if success:
+                st.success(message)
+                rag.refresh_index()  # Refresh RAG after editing a book
+            else:
+                st.error(message)
+    
+    st.subheader("Export Transactions")
+    transactions = read_transactions()
+    if not transactions.empty:
+        csv = transactions.to_csv(index=False)
+        st.download_button("Download CSV", csv, "transactions.csv", "text/csv")
+    else:
+        st.warning("No transaction data to export.")
+
+with tabs[3]:
+    st.title("LLM Chat with RAG")
+    query = st.text_input("Ask a question about books or transactions")
+    if query:
+        try:
+            context = rag.retrieve(query)
+            response = rag.generate(query, context)
+            # Parse thinking and answer
+            think_part = ""
+            answer_part = response
+            if "<think>" in response and "</think>" in response:
+                parts = response.split("</think>")
+                think_part = parts[0].replace("<think>", "").strip() if parts[0] else "No reasoning provided."
+                answer_part = parts[1].strip() if len(parts) > 1 and parts[1] else "No answer generated."
+            else:
+                think_part = "The model did not provide a detailed reasoning process."
+                answer_part = response if response else "No response generated."
+            # Display answer directly and thinking in a dropdown
+            if answer_part:
+                st.write(answer_part)
+            else:
+                st.warning("No answer available.")
+            with st.expander("View Model's Reasoning Process"):
+                if think_part:
+                    st.write(think_part)
+                else:
+                    st.write("No reasoning process available.")
+        except Exception as e:
+            st.error(f"An error occurred: {str(e)}. Please check the terminal for details.")
